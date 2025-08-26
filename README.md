@@ -8,5 +8,5 @@ Rodrigo Oliveira Grassia - 824135663
 
 API:
 TMDB (The Movie Database)
-https://developer.themoviedb.org/v4/docs/getting-started
+https://www.themoviedb.org/settings/api
 https://www.themoviedb.org/
