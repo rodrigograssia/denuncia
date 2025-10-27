@@ -1,5 +1,5 @@
-# FilMatrix-A3
-Site sobre filmes e séries
+# denunc.ia
+Site para identificar e denunciar casos do "Golpe do Presente"
 
 Membros do grupo:
 1. Guilherme dos Santos Cunha - 824220742
@@ -7,11 +7,10 @@ Membros do grupo:
 3. Rodrigo Oliveira Grassia - 824135663
 
 Proposta do sistema:
-1. Criar ou acessar sua conta
-2. Buscar, avaliar e/ou favoritar filmes
-3. Criar listas personalizadas com os filmes
+1. Acessar a plataforma para saber sobre o "Golpe do Presente"
+2. Caso queira fazer uma denúncia, faça cadastro ou login para que o sistema te identifique
+3. O sistema também possibilita a verificação de um telefone (dizendo se é spam ou não)
 
 API:
-TMDB (The Movie Database)
-https://www.themoviedb.org/settings/api
-https://www.themoviedb.org/
+IPQS // https://www.ipqualityscore.com/user/phone-number-validation-api
+Mailgun // https://www.mailgun.com
