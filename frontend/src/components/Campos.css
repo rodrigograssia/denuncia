@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz@0,14..32;1,14..32&display=swap');
+
+.campo{
+    border-radius: 6px;
+    border: 2px solid gainsboro; 
+    width: 400px;
+    height: 42px;
+    background-color: #E8F0FE;
+    font-size: 17px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding-left: 10px;
+    
+}
+
+input::placeholder {
+  color: gray;
+  font-weight: 200;
+  font-size: 17px;
+  align-items: center;
+  display: flex;
+  font-family: "Inter", sans-serif;
+  font-weight: 200;
+}

@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz@0,14..32;1,14..32&display=swap');
+
+.botaoConf{
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    font-weight:400 ;
+    color:white;
+    background-color: #1351B4;
+    border: none;
+    border-radius: 31px;
+    width:148px ;
+    height: 38px;
+    cursor: pointer;
+}
+.botaoCanc{
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    font-weight:400 ;
+    background-color: white;
+    border: 2px solid #1351B4; 
+    border-radius: 31px;
+    width:148px ;
+    color: #1351B4;
+    height: 38px;
+    cursor: pointer;
+}
+
+.botaoVoltar{
+    font-size: 15px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    color:white;
+    background-color: #1351B4;
+    border: none;
+    border-radius: 10px;
+    width: 120px;
+    height: 38px;
+    cursor: pointer;
+}

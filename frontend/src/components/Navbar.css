@@ -1,0 +1,63 @@
+.pill-navbar-wrapper {
+  text-align: center;
+  padding: 24px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pill-navbar {
+  width: min(38rem, 85%);
+  display: inline-flex;
+  align-items: center;
+  gap: 40px;
+  background-color: #f3f3f3;
+  padding: 20px min(24px, 4vw);
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .pill-navbar {
+    width: min(38rem, 80%);
+    gap: 16px;
+    padding: 16px 20px;
+  }
+}
+
+.pill-navbar a {
+  text-decoration: none;
+  color: #333;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  font-weight: 500;
+  padding: 4px 0;
+}
+.pill-navbar a:hover {
+  color: #4a55c7;
+}
+
+.pill-navbar-wrapper.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: transparent;
+  border-bottom: none;
+
+  padding: 20px 0;
+}
+
+.pill-navbar-wrapper.fixed .pill-navbar {
+  transform: translateY(-150%);
+  animation: slideDownPill 0.3s ease-out forwards;
+}
+
+@keyframes slideDownPill {
+  from {
+    transform: translateY(-150%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
