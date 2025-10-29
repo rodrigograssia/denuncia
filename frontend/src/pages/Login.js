@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Importe o useNavigate
+import { useNavigate } from "react-router-dom";
 import Botao from "../components/Button";
 import CampoSenha from "../components/CampoSenha";
 import CampoTexto from "../components/Campos";
