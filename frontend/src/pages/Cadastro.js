@@ -13,51 +13,46 @@ import "../styles/Cadastro.css";
 function Cadastro() {
   const navigate = useNavigate();
 
-  const handleVoltar = () => {
+  const handleCancelar = () => {
     navigate("/");
   };
 
   return (
     <div className="auth-page-wrapper">
 
-      <div className="pagina-auth-voltar">
-        <Botao
-          titulo={"Voltar"}
-          classe={"botaoVoltar"}
-          onClick={handleVoltar}
-        />
-      </div>
-
-      <LogoTitulo titulo={"denunc.ia"}></LogoTitulo>
-      <Titulo titulo={"Cadastro"}></Titulo><br></br>
+      <LogoTitulo titulo={"denunc.ia"} />
+      <Titulo titulo={"Cadastro"} /><br />
 
       <div className="auth-container container-cadastro">
 
         <div className="camposContainer">
-          <Label texto={"CPF"}></Label>
-          <CampoTexto texto={"XXX.XXX.XXX-XX"}></CampoTexto>
-          <Label texto={"Email"}></Label>
-          <CampoTexto texto={"denunc.ia@gmail.com"}></CampoTexto>
-          <Label texto={"Nome"}></Label>
-          <CampoTexto texto={"Guilherme Tigrinho"}></CampoTexto>
-          <Label texto={"Telefone"}></Label>
-          <CampoTexto texto={"(11) 98765-4321"}></CampoTexto>
-          <Label texto={"Senha"}></Label>
-          <CampoSenha></CampoSenha>
-          <Label texto={"Confirmar Senha"}></Label>
-          <CampoSenha></CampoSenha>
+          <Label texto={"CPF"} />
+          <CampoTexto texto={"XXX.XXX.XXX-XX"} />
+          <Label texto={"Email"} />
+          <CampoTexto texto={"denunc.ia@gmail.com"} />
+          <Label texto={"Nome"} />
+          <CampoTexto texto={"Guilherme Tigrinho"} />
+          <Label texto={"Telefone"} />
+          <CampoTexto texto={"(11) 98765-4321"} />
+          <Label texto={"Senha"} />
+          <CampoSenha />
+          <Label texto={"Confirmar Senha"} />
+          <CampoSenha />
         </div>
+
         <div className="botoesContainer">
-          <Botao titulo={"Cancelar"} classe={"botaoCanc"}></Botao>
-          <Botao titulo={"Enviar"} classe={"botaoConf"}></Botao>
+          <Botao titulo={"Cancelar"} classe={"botaoCanc"} onClick={handleCancelar} />
+          <Botao titulo={"Enviar"} classe={"botaoConf"} />
         </div>
+
         <Links
           style={{ color: "#686868ff", alignSelf: "center", marginTop: "10px" }}
           link={"/login"}
           texto={"Já tenho uma conta"}
-        ></Links>
+        />
       </div>
     </div>
   );
 }
+
 export default Cadastro;

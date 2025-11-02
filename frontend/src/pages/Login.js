@@ -13,46 +13,41 @@ import "../styles/Cadastro.css";
 function Login() {
   const navigate = useNavigate();
 
-  const handleVoltar = () => {
+  const handleCancelar = () => {
     navigate("/");
   };
 
   return (
     <div className="auth-page-wrapper">
 
-      <div className="pagina-auth-voltar">
-        <Botao
-          titulo={"Voltar"}
-          classe={"botaoVoltar"}
-          onClick={handleVoltar}
-        />
-      </div>
-
-      <LogoTitulo titulo={"denunc.ia"}></LogoTitulo>
-      <Titulo titulo={"Login"}></Titulo><br></br>
+      <LogoTitulo titulo={"denunc.ia"} />
+      <Titulo titulo={"Login"} /><br />
 
       <div className="auth-container container-login">
 
         <div className="camposContainer">
-          <Label texto={"CPF"}></Label>
-          <CampoTexto texto={"XXX.XXX.XXX-XX"}></CampoTexto>
-          <Label texto={"Senha"}></Label>
-          <CampoSenha></CampoSenha>
+          <Label texto={"CPF"} />
+          <CampoTexto texto={"XXX.XXX.XXX-XX"} />
+          <Label texto={"Senha"} />
+          <CampoSenha />
         </div>
+
         <Links
           style={{ alignSelf: "flex-start" }}
           link={"https://www.youtube.com/"}
           texto={"Esqueci minha senha"}
-        ></Links>
+        />
+
         <div className="botoesContainer">
-          <Botao titulo={"Cancelar"} classe={"botaoCanc"}></Botao>
-          <Botao titulo={"Enviar"} classe={"botaoConf"}></Botao>
+          <Botao titulo={"Cancelar"} classe={"botaoCanc"} onClick={handleCancelar} />
+          <Botao titulo={"Enviar"} classe={"botaoConf"} />
         </div>
+
         <Links
           style={{ color: "#686868ff", alignSelf: "center", marginTop: "10px" }}
           link={"/cadastro"}
           texto={"Ainda não tenho uma conta"}
-        ></Links>
+        />
       </div>
     </div>
   );

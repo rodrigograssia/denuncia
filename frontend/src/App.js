@@ -1,24 +1,42 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
-import MainLayout from "./components/MainLayout";
+import Denuncia from "./pages/Denuncia";
+import TopBar from "./components/TopBar";
+import Navbar from "./components/Navbar";
+
+import NotFound from "./pages/NotFound"; 
+
 import "./App.css";
 
 function App() {
+  const location = useLocation();
+  const path = location.pathname;
+
+  const showTopBar = path !== "/login" && path !== "/cadastro";
+  const showNavbar = path === "/";
+
   return (
     <div className="App">
+      
+      {showTopBar && (
+        <TopBar />
+      )}
+      
+      {showNavbar && (
+        <Navbar />
+      )}
+
       <main>
         <Routes>
-          {/*Rotas que NÃO têm Navbar*/}
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/denuncia" element={<Denuncia />} />
 
-          {/*Rotas que TÊM Navbar*/}
-          <Route element={<MainLayout />}>
-            <Route path="/" element={<Home />} />
-          </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
     </div>

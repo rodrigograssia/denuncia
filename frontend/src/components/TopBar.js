@@ -35,7 +35,7 @@ const TopBar = forwardRef((props, ref) => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/denunciar">Denunciar Golpe</Link>
+          <Link to="/denuncia">Denunciar Golpe</Link>
         </li>
         <li
           className="profile-link"
