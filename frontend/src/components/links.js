@@ -1,12 +1,19 @@
-import "../components/link.css";
+import { twMerge } from 'tailwind-merge';
+const baseStyles = [
+  'no-underline',
+  'text-[#086FC7]'
+];
 
-function Links({ link, texto, ...props }) {
+function Links({ href, children, className, ...props }) {
 
-  const combinedClassName = `link ${props.className || ''}`.trim();
+  const mergedClasses = twMerge(
+    baseStyles,
+    className
+  );
 
   return (
-    <a href={link} {...props} className={combinedClassName}>
-      {texto}
+    <a href={href} {...props} className={mergedClasses}>
+      {children}
     </a>
   );
 }

@@ -1,9 +1,12 @@
-import './Campos.css';
+import CampoTexto from './Campos';
 
-function CampoSenha(){
-    return <div>
-        <input className='campo' type = "password" placeholder = "************"></input>
-    </div>
+function CampoSenha({ placeholder = "************", className, ...props }) {
+  
+  return (
+    <CampoTexto 
+      type="password" placeholder={placeholder} className={className} {...props}
+    />
+  );
 }
 
 export default CampoSenha;
