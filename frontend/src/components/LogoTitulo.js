@@ -1,10 +1,11 @@
-import { twMerge } from "tailwind-merge";
+import React from "react";
+import { twMerge } from 'tailwind-merge';
 
 const baseStyles = [
-  'font-normal',
-  'text-[70px]',
-  'text-[#426192]',
-  'font-bold'
+  'font-bold',
+  'text-[#093f9e]',
+  'text-4xl',
+  'sm:text-5xl',
 ];
 
 function LogoTitulo({ children, className, ...props }){
@@ -20,6 +21,5 @@ function LogoTitulo({ children, className, ...props }){
     </h1>
   );
 }
-
 
 export default LogoTitulo;
