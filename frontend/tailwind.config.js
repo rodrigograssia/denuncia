@@ -1,4 +1,5 @@
 module.exports = {
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -8,4 +9,4 @@ module.exports = {
   },
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   plugins: [],
-}
+};

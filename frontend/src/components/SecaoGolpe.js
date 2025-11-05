@@ -29,8 +29,6 @@ function SecaoGolpe() {
         </p>
       </div>
       <div className="imagem-coluna">
-        {/* O caminho /images/... funciona se a pasta 'images' 
-            estiver dentro da pasta 'public' do seu projeto */}
         <img src="/images/presente.jpg" alt="Presente do golpe" />
       </div>
     </section>

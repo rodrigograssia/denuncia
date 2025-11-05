@@ -3,13 +3,14 @@ import { twMerge } from 'tailwind-merge';
 
 const baseStyles = [
   'font-bold',
-  'text-[#093f9e]',
-  'text-4xl',
-  'sm:text-5xl',
+  'text-[#4c71a6]',
+  'text-5xl',
+  'sm:text-6xl',
+  'mb-[30px]'
 ];
 
 function LogoTitulo({ children, className, ...props }){
-
+  
   const mergedClasses = twMerge(
     baseStyles,
     className
@@ -23,3 +24,4 @@ function LogoTitulo({ children, className, ...props }){
 }
 
 export default LogoTitulo;
+
