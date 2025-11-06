@@ -3,10 +3,11 @@ import Topbar from "../components/TopBar";
 import Navbar from "../components/Navbar";
 import Botao from "../components/Botao";
 import Dicas from "../components/Dicas";
+import LinksFooter from "../components/LinksFooter";
 
 function Home() {
   return (
-    <div class="darkMode" className="m-0 p-0 min-h-screen dark:bg-neutral-800">
+    <div className="m-0 p-0 min-h-screen dark:bg-neutral-800">
       <header><Topbar className="mb-10"/></header>
       
       <div className="pt-8 flex flex-col items-center"> 
@@ -18,7 +19,7 @@ function Home() {
               <h1 className="dark:text-white font-bold text-xl sm:text-3xl text-center">Como funciona a denunc.ia?</h1>
               <p className="text-base sm:text-lg text-gray-700 dark:text-gray-400 leading-relaxed text-justify">
                 A <strong>denunc.ia</strong> é um site criado com o propósito de
-                conscientizar a população sobre o “Golpe do Presente”, alertando sobre
+                conscientizar a população sobre o "Golpe do Presente", alertando sobre
                 seus riscos e formas de prevenção. Além disso, a plataforma oferece um
                 espaço seguro e acessível para que as pessoas possam relatar casos em
                 que foram vítimas — ou quase vítimas — desse golpe, bem como denunciar
@@ -27,11 +28,11 @@ function Home() {
               </p>
               
               <div className="grid grid-cols-2 gap-4 w-full max-w-lg mx-auto mb-4">
-                <Botao variant="dicas" className="w-full">
+                <Botao variant="dicas" className="w-full" onClick={() => document.getElementById('dicas').scrollIntoView({ behavior: 'smooth' })}>
                   Ver dicas para <br />
                   não cair no golpe
                 </Botao>
-                <Botao variant="denuncia" className="w-full">
+                <Botao variant="denuncia" className="w-full" to="/denuncia">
                   Fazer uma denúncia
                 </Botao>
               </div>
@@ -83,14 +84,18 @@ function Home() {
         </div>
 
         <div className="w-full border-b border-gray-300 dark:border-neutral-600 pb-6 p-4 flex items-center ">
-            <div id="dicas" className="px-10 w-md sm:max-w-4xl mx-auto mt-6 scroll-mt-12 border border-gray-300 dark:border-neutral-600 w-full rounded-2xl shadow-lg">
+            <div id="dicas" className="px-10 w-md sm:max-w-4xl mx-auto my-6 scroll-my-12 border border-gray-300 dark:border-neutral-600 w-full rounded-2xl shadow-lg">
                 <Dicas />
             </div>
         </div>
-        
-        <div>
-          
-        </div>
+        <footer className="w-full bg-[#eeeeee] dark:bg-neutral-900 py-2 flex items-center justify-between px-6">
+          <div className="flex items-center">
+             <LinksFooter />
+          </div>
+          <div className="flex items-center">
+             <p className="text-black dark:text-white">© 2025 denunc.ia - Todos os direitos reservados</p>
+          </div>
+        </footer>
       </div>
     </div>
   );

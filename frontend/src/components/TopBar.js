@@ -85,24 +85,26 @@ const TopBar = forwardRef((props, ref) => {
         <li className="ml-4 sm:ml-8">
           <Link to="/denuncia" className={twMerge(linkBaseStyles)}>Denunciar Golpe</Link>
         </li>
-        <li 
-          className={twMerge(profileLinkBaseStyles, "ml-4 sm:ml-8 profile-link-container")}
-          onClick={toggleDropdown}
-        >
-          <span className="profile-icon">
+        <li className="ml-4 sm:ml-8">
+          <button
+            onClick={toggleDropdown}
+            className={twMerge(profileLinkBaseStyles, "profile-link-container")}
+            aria-label="Menu do perfil"
+            aria-expanded={showDropdown}
+          >
             <img
               src="/images/user.svg"
               alt="Perfil"
               className="w-6 h-6 sm:w-8 sm:h-8 p-1" 
             />
-          </span>
+          </button>
 
           {showDropdown && (
-            <div className="profile-dropdown absolute top-[35%] right-[35%] bg-white border border-gray-300 rounded-lg shadow-xl p-3 flex flex-col gap-3 min-w-[120px]">
-              <Link to="/login" className=" text-sm sm:text-lg font-medium text-gray-800 hover:text-[#4a55c7] no-underline">
+            <div className="profile-dropdown absolute top-full right-0 mt-2 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-600 rounded-lg shadow-xl p-3 flex flex-col gap-3 min-w-[120px]">
+              <Link to="/login" className="text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
                 Login
               </Link>
-              <Link to="/cadastro" className="mt-1 text-sm sm:text-lg font-medium text-gray-800 hover:text-[#4a55c7] no-underline">
+              <Link to="/cadastro" className="mt-1 text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
                 Cadastro
               </Link>
             </div>

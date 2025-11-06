@@ -4,7 +4,7 @@ import Botao from "../components/Botao";
 import CampoSenha from "../components/CampoSenha";
 import CampoTexto from "../components/Campos";
 import Label from "../components/Label";
-import LogoTitulo from "../components/LogoTitulo";
+import Title from "../components/Title";
 import DarkModeToggle from "../components/DarkModeToggle";
 
 
@@ -15,7 +15,7 @@ function Cadastro() {
         <DarkModeToggle />
       </div>
       
-      <LogoTitulo>denunc.ia</LogoTitulo>
+      <Title>denunc.ia</Title>
 
       <div className="flex flex-col items-center gap-3 border-2 border-gray-300 dark:border-neutral-600 rounded-lg p-4 sm:p-6 w-full max-w-[400px] bg-white dark:bg-neutral-900 shadow-lg">
         <h1 className="font-semibold text-2xl sm:text-3xl text-gray-900 dark:text-white">Cadastro</h1>

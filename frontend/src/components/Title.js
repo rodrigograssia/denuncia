@@ -9,7 +9,7 @@ const baseStyles = [
   'mb-[30px]'
 ];
 
-function LogoTitulo({ children, className, ...props }){
+function Title({ children, className, ...props }){
   
   const mergedClasses = twMerge(
     baseStyles,
@@ -23,5 +23,5 @@ function LogoTitulo({ children, className, ...props }){
   );
 }
 
-export default LogoTitulo;
+export default Title;
 
