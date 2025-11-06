@@ -10,11 +10,11 @@ function Home() {
     <div className="m-0 p-0 min-h-screen dark:bg-neutral-800">
       <header><Topbar className="mb-10"/></header>
       
-      <div className="pt-8 flex flex-col items-center"> 
-        <Navbar /> 
+      <div className="pt-10 flex flex-col items-center"> 
+        <Navbar className="mb-10" />
         
         <div className="w-full border-b border-gray-300 pb-6 dark:border-neutral-600 ">
-            <div id="sobre-denuncia" className="flex flex-col gap-4 sm:gap-6 px-6 max-w-7xl mx-auto mt-[-4rem] pt-20">
+            <div id="sobre-denuncia" className="flex flex-col gap-4 sm:gap-6 px-6 max-w-7xl mx-auto mt-[-5rem] pt-20">
               
               <h1 className="dark:text-white font-bold text-xl sm:text-3xl text-center">Como funciona a denunc.ia?</h1>
               <p className="text-base sm:text-lg text-gray-700 dark:text-gray-400 leading-relaxed text-justify">

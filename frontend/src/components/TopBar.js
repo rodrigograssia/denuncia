@@ -19,15 +19,14 @@ const profileLinkBaseStyles = [
 
 const linkBaseStyles = [
   'text-gray-700',
-  'dark:text-white', 
-  'text-base',
+  'dark:text-white',
   'font-medium', 
   'no-underline',
   'transition-colors',
   'hover:text-[#4a55c7]',
   'dark:hover:text-[#5f6ded]',
-  'text-sm', 
-  'sm:text-base'
+  'text-xs', 
+  'sm:text-lg'
 ];
 
 const TopBar = forwardRef((props, ref) => {
@@ -64,8 +63,8 @@ const TopBar = forwardRef((props, ref) => {
     'relative', 
     'z-10',     
     'py-4',
-    'px-4',
-    'sm:px-8',
+    'px-2',
+    'md:px-8',
     'm-0'
   ];
 
@@ -100,7 +99,7 @@ const TopBar = forwardRef((props, ref) => {
           </button>
 
           {showDropdown && (
-            <div className="profile-dropdown absolute top-full right-0 mt-2 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-600 rounded-lg shadow-xl p-3 flex flex-col gap-3 min-w-[120px]">
+            <div className="profile-dropdown absolute top-full right-24 -mt-10 md:right-40 md:-mt-10 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-600 rounded-lg shadow-xl p-3 flex flex-col gap-3 min-w-[120px]">
               <Link to="/login" className="text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
                 Login
               </Link>
