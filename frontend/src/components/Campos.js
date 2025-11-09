@@ -8,6 +8,9 @@ const baseStyles = [
   'dark:border-neutral-600',
   'w-full',
   'bg-[#E8F0FE]',
+  'dark:bg-neutral-800',
+  'text-gray-800',
+  'dark:text-white',
   
   'py-1',
   'sm:py-2',
@@ -29,15 +32,22 @@ const baseStyles = [
   'focus:ring-blue-500',
 ];
 
-function CampoTexto({ placeholder, className, ...props }) {
+function CampoTexto({ placeholder, className, as = "input", ...props }) {
   
   const mergedClasses = twMerge(
     baseStyles,
+    as === "textarea" && "align-top resize-none",
     className
   );
   
+  const Component = as === "textarea" ? "textarea" : "input";
+  
   return (
-    <input type="text" placeholder={placeholder} className={mergedClasses} {...props} 
+    <Component 
+      type={as === "input" ? "text" : undefined}
+      placeholder={placeholder} 
+      className={mergedClasses} 
+      {...props} 
     />
   );
 }

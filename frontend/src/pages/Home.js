@@ -7,10 +7,10 @@ import LinksFooter from "../components/LinksFooter";
 
 function Home() {
   return (
-    <div className="m-0 p-0 min-h-screen dark:bg-neutral-800">
+    <div className="m-0 p-0 min-h-screen dark:bg-neutral-800 flex flex-col">
       <header><Topbar className="mb-10"/></header>
       
-      <div className="pt-10 flex flex-col items-center"> 
+      <div className="pt-10 flex-grow flex flex-col items-center"> 
         <Navbar className="mb-10" />
         
         <div className="w-full border-b border-gray-300 pb-6 dark:border-neutral-600 ">
@@ -88,12 +88,11 @@ function Home() {
                 <Dicas />
             </div>
         </div>
-        <footer className="w-full bg-[#eeeeee] dark:bg-neutral-900 py-2 flex items-center justify-between px-6">
-          <div className="flex items-center">
-             <LinksFooter />
-          </div>
-          <div className="flex items-center">
-             <p className="text-black dark:text-white">© 2025 denunc.ia - Todos os direitos reservados</p>
+
+        <footer className="w-full bg-[#eeeeee] dark:bg-neutral-900 py-4 px-4 md:py-5 md:px-8 mt-auto">
+          <div className="flex flex-col items-center gap-3 md:flex-row md:justify-between md:gap-4">
+            <LinksFooter />
+            <p className="text-black dark:text-white text-xs sm:text-sm md:text-base text-center md:text-right leading-tight">© 2025 denunc.ia – Todos os direitos reservados</p>
           </div>
         </footer>
       </div>

@@ -26,7 +26,7 @@ const variants = {
   dicas: 'bg-white dark:bg-neutral-800 border-2 border-[#4c71a6] dark:border-[#5480B8] text-[#4c71a6] dark:text-[#5480B8] hover:bg-[#ececec] dark:hover:bg-neutral-900 font-semibold',
   denuncia: 'bg-[#4c71a6] border-none text-white hover:bg-[#324b74] font-semibold',
 
-  links: 'bg-[#4c71a6] border-none w-8 h-8 md:w-10 md:h-10 hover:bg-[#324b74] rounded-full p-1 md:p-1.5'
+  links: 'bg-[#4c71a6] border-none w-8 h-8 md:w-10 md:h-10 hover:bg-[#324b74] rounded-full p-0 sm:p-0 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#4c71a6] dark:focus:ring-offset-neutral-900'
 };
 
 function Botao({ children, className, variant = 'confirm', to, ...props }) {
