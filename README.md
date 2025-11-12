@@ -14,4 +14,4 @@ Funcionalidades do sistema:
 
 API:
 IPQS // https://www.ipqualityscore.com/user/phone-number-validation-api
-Mailgun // https://www.mailgun.com
+SendGrid //(https://sendgrid.com/en-us/solutions/email-api)
