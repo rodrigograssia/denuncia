@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+// Armazena a preferência em localStorage
+// Atualiza a classe `dark` no <html>
 const DarkModeToggle = ({ className = '' }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const saved = localStorage.getItem('darkMode');

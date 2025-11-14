@@ -16,7 +16,7 @@ function AreaTelefone() {
       {visivel && (
         <div className="w-full max-w-md lg:max-w-lg">
           <div className="flex gap-3 items-center">
-            <CampoTexto placeholder="Coloque o número" className="flex-1 text-base md:text-lg h-12 md:h-14" />
+            <CampoTexto placeholder="Coloque o número" className="flex-1 text-base md:text-lg h-12 md:h-14" mask="phone" />
             <Botao variant="confirm" className="text-base md:text-lg h-12 md:h-14 px-6 md:px-8 whitespace-nowrap">Enviar</Botao>
           </div>
         </div>

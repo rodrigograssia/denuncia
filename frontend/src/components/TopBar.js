@@ -1,5 +1,5 @@
 import React, { useState, useEffect, forwardRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
 import DarkModeToggle from "./DarkModeToggle";
 
@@ -31,6 +31,8 @@ const linkBaseStyles = [
 
 const TopBar = forwardRef((props, ref) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isLogged, setIsLogged] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
@@ -51,6 +53,20 @@ const TopBar = forwardRef((props, ref) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showDropdown]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLogged(!!token);
+  }, [showDropdown]);
+
+  const handleLogout = () => {
+    // Remove token local e redireciona para a página inicial
+    alert("Logout realizado com sucesso!");
+    localStorage.removeItem("token");
+    setIsLogged(false);
+    setShowDropdown(false);
+    navigate("/");
+  };
 
   const topBarClasses = [
     'flex',
@@ -99,13 +115,29 @@ const TopBar = forwardRef((props, ref) => {
           </button>
 
           {showDropdown && (
-            <div className="profile-dropdown absolute top-full right-24 -mt-10 md:right-40 md:-mt-10 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-600 rounded-lg shadow-xl p-3 flex flex-col gap-3 min-w-[120px]">
-              <Link to="/login" className="text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
-                Login
-              </Link>
-              <Link to="/cadastro" className="mt-1 text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
-                Cadastro
-              </Link>
+            <div className="profile-dropdown absolute top-full right-24 -mt-10 md:right-40 md:-mt-10 bg-white dark:bg-neutral-800 border border-gray-300 dark:border-neutral-600 rounded-lg shadow-xl p-3 flex flex-col gap-3 min-w-[160px]">
+              {!isLogged ? (
+                <>
+                  <Link onClick={() => setShowDropdown(false)} to="/login" className="text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
+                    Login
+                  </Link>
+                  <Link onClick={() => setShowDropdown(false)} to="/cadastro" className="mt-1 text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
+                    Cadastro
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link onClick={() => setShowDropdown(false)} to="/dados" className="text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
+                    Meus Dados
+                  </Link>
+                  <Link onClick={() => setShowDropdown(false)} to="/minhas-denuncias" className="text-sm sm:text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-[#4a55c7] dark:hover:text-[#5f6ded] no-underline">
+                    Minhas Denúncias
+                  </Link>
+                  <button onClick={handleLogout} className="text-left text-sm sm:text-lg font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200">
+                    Logout
+                  </button>
+                </>
+              )}
             </div>
           )}
         </li>

@@ -4,6 +4,9 @@ import Home from "./pages/Home";
 import Login from "./pages/Login"; 
 import Cadastro from "./pages/Cadastro";
 import Denuncia from "./pages/Denuncia";
+import Verificacao from "./pages/Verificacao";
+import MinhasDenuncias from "./pages/MinhasDenuncias";
+import Dados from "./pages/Dados";
 
 function App() {
   return (
@@ -13,6 +16,9 @@ function App() {
       <Route path="/denuncia" element={<Denuncia />} />
       <Route path="/login" element={<Login />} />
       <Route path="/cadastro" element={<Cadastro />} />
+      <Route path="/verificacao" element={<Verificacao />} />
+      <Route path="/minhas-denuncias" element={<MinhasDenuncias />} />
+      <Route path="/dados" element={<Dados />} />
     </Routes>
   );
 }

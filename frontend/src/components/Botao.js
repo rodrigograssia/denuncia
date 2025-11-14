@@ -9,9 +9,9 @@ const baseStyles = [
   'transition-colors',
   'duration-200',
 
-  'py-1', 'sm:py-1.5',
-  'px-3', 'sm:px-4',
-  'text-sm', 'sm:text-base',
+  'py-1.5',
+  'px-4',
+  'text-base',
   
   'flex', 'items-center', 'justify-center', 'text-center' 
 ];

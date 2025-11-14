@@ -5,11 +5,11 @@ const baseStyles = [
   'font-normal',
   'text-gray-700',
   'dark:text-neutral-300',
-  'text-sm',
-  'sm:text-base',
+  'text-base',
 ];
 
 
+// Label pequeno e reutilizável para inputs
 function Label({ children, className, ...props }) {
   const mergedClasses = twMerge(
     baseStyles,

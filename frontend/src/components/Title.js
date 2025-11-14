@@ -4,9 +4,8 @@ import { twMerge } from 'tailwind-merge';
 const baseStyles = [
   'font-bold',
   'text-[#4c71a6]',
-  'text-5xl',
-  'sm:text-6xl',
-  'mb-[30px]'
+  'text-7xl',
+  'mb-6'
 ];
 
 function Title({ children, className, ...props }){
