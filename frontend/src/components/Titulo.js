@@ -4,7 +4,8 @@ import { twMerge } from 'tailwind-merge';
 const baseStyles = [
   'font-bold',
   'text-[#4c71a6]',
-  'text-7xl',
+  'text-6xl',
+  'sm:text-7xl',
   'mb-6'
 ];
 

@@ -132,7 +132,7 @@ function Dados() {
 
                 <div className="w-full max-w-[640px] bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-6 shadow-xl">
                     {loading ? (
-                        <p className="text-gray-600 dark:text-gray-300">Carregando...</p>
+                        <p className="text-center dark:text-gray-300">Carregando...</p>
                     ) : (
                         <div className="flex flex-col gap-4">
                             <div>

@@ -8,6 +8,7 @@ function MinhasDenuncias() {
     const [denuncias, setDenuncias] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,8 +63,17 @@ function MinhasDenuncias() {
                 <h1 className="dark:text-white font-bold text-xl sm:text-3xl text-center mb-6">Minhas Denúncias</h1>
 
                 <div className="w-full max-w-[800px]">
+                    <div className="mb-4 w-full flex justify-center">
+                        <input
+                            type="text"
+                            value={searchTerm}
+                            onChange={e => setSearchTerm(e.target.value)}
+                            placeholder="Buscar por título, categoria, empresa, descrição ou ID"
+                            className="w-full md:w-2/3 px-3 py-2 border rounded shadow-sm bg-white dark:bg-neutral-800 text-sm dark:text-white"
+                        />
+                    </div>
                     {loading && (
-                        <div className="bg-white dark:bg-neutral-900 rounded-lg border p-6 shadow-xl text-center">Carregando suas denúncias...</div>
+                        <div className="text-center dark:text-white">Carregando suas denúncias...</div>
                     )}
 
                     {error && (
@@ -78,14 +88,29 @@ function MinhasDenuncias() {
 
                     {!loading && !error && denuncias.length > 0 && (
                         <div className="space-y-4 w-full">
-                            {denuncias.map(d => (
-                                <div key={d.idDenuncia} className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-4 shadow">
-                                    <h2 className="font-bold text-lg dark:text-white">{d.titulo}</h2>
-                                    <p className="text-sm text-gray-500">Categoria: {d.categoria}</p>
-                                    {d.nomeEmpresa && <p className="text-sm">Empresa: {d.nomeEmpresa}</p>}
-                                    {d.descricao && <p className="mt-2 text-gray-700 dark:text-gray-300">{d.descricao}</p>}
-                                </div>
-                            ))}
+                            {denuncias
+                                .filter(d => {
+                                    const q = searchTerm.trim().toLowerCase();
+                                    if (!q) return true;
+                                    return String(d.idDenuncia).toLowerCase().includes(q)
+                                        || (d.titulo || '').toLowerCase().includes(q)
+                                        || (d.categoria || '').toLowerCase().includes(q)
+                                        || (d.nomeEmpresa || '').toLowerCase().includes(q)
+                                        || (d.descricao || '').toLowerCase().includes(q);
+                                })
+                                .map(d => (
+                                    <div key={d.idDenuncia} className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-4 shadow">
+                                        <div className="flex items-start justify-between">
+                                            <h2 className="font-bold text-lg dark:text-white">{d.titulo}</h2>
+                                            <span className="text-xs text-gray-400 ml-2">ID: {d.idDenuncia}</span>
+                                        </div>
+                                        <div className="flex flex-wrap gap-4 items-center text-sm text-gray-400">
+                                            <span>Categoria: <span className="text-gray-700 dark:text-gray-200">{d.categoria}</span></span>
+                                            {d.nomeEmpresa && <span>Empresa: <span className="text-gray-700 dark:text-gray-200">{d.nomeEmpresa}</span></span>}
+                                        </div>
+                                        {d.descricao && <p className="mt-2 text-gray-600 dark:text-gray-300">{d.descricao}</p>}
+                                    </div>
+                                ))}
                         </div>
                     )}
                 </div>

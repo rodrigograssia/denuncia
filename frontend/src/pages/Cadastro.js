@@ -90,7 +90,7 @@ function Cadastro() {
           onChange={(e) => setConfirmarSenha(e.target.value)}
           />
         </div>
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center w-full">
+        <div className="flex flex-row gap-2 sm:gap-4 justify-center w-full">
           <Botao to="/" variant="cancel" className="hover:bg-[#ececec] dark:hover:bg-neutral-700 w-full">
             Cancelar
           </Botao>

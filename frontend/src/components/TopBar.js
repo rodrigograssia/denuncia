@@ -58,7 +58,6 @@ const Topbar = forwardRef((props, ref) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLogged(!!token);
-    // if logged, fetch /usuario/me to check role
     if (token) {
       (async () => {
         try {
@@ -104,24 +103,25 @@ const Topbar = forwardRef((props, ref) => {
     <div className={twMerge(topBarClasses)} ref={ref}>
       
       <div className="flex items-center">
-        <Link to="/" className="text-xl sm:text-2xl font-bold text-[#4c71a6] no-underline">
+        <Link to="/" className="text-l sm:text-2xl font-bold text-[#4c71a6] no-underline">
           denunc.ia
         </Link>
       </div>
 
       <ul className="flex items-center list-none m-0 p-0 flex-nowrap">
-        <li>
+        <li className="ml-2 sm:ml-8">
           <Link to="/" className={twMerge(linkBaseStyles)}>Home</Link>
         </li>
-        <li className="ml-4 sm:ml-8">
-          <Link to="/denuncia" className={twMerge(linkBaseStyles)}>Denunciar Golpe</Link>
+        <li className="ml-2 sm:ml-8">
+          <Link to="/denuncia" className={twMerge(linkBaseStyles)}>Denunciar
+          </Link>
         </li>
         {isAdmin && (
-          <li className="ml-4 sm:ml-8">
+          <li className="ml-2 sm:ml-8">
             <Link to="/gerenciamento" className={twMerge(linkBaseStyles)}>Gerenciamento</Link>
           </li>
         )}
-        <li className="ml-4 sm:ml-8">
+        <li className="ml-2 sm:ml-8">
           <button
             onClick={toggleDropdown}
             className={twMerge(profileLinkBaseStyles, "profile-link-container")}
@@ -162,7 +162,7 @@ const Topbar = forwardRef((props, ref) => {
             </div>
           )}
         </li>
-        <li className="ml-4 sm:ml-8">
+        <li className="ml-2 sm:ml-8">
           <DarkModeToggle />
         </li>
       </ul>

@@ -9,6 +9,7 @@ function Gerenciamento() {
     const [error, setError] = useState(null);
     const [users, setUsers] = useState([]);
     const [denuncias, setDenuncias] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const [showUsers, setShowUsers] = useState(false);
     const [showDenuncias, setShowDenuncias] = useState(false);
 
@@ -77,26 +78,38 @@ function Gerenciamento() {
 
             <main className="flex-1 flex flex-col pt-6 pb-20 px-4 md:pt-8 md:px-8 w-full items-center">
                 <Botao variant="back" to="/">Voltar</Botao>
-                <div className="w-full max-w-7xl mx-auto">
+                <div className="w-full max-w-8xl mx-auto px-20">
                     <h1 className="dark:text-white font-bold text-xl sm:text-3xl text-center mb-6">Gerenciamento da Plataforma</h1>
 
-                    {loading && <div className="text-center">Carregando...</div>}
+                    {loading && <div className="text-center dark:text-white mb-8">Carregando...</div>}
                     {error && <div className="text-center text-red-600">{error}</div>}
 
                     <div className="flex gap-4 justify-center mb-6">
                         <button
-                            className={`px-4 py-2 rounded transition transform duration-150 cursor-pointer ${showUsers ? 'bg-blue-600 text-white' : 'bg-white dark:bg-neutral-900'} hover:shadow-md hover:scale-105`}
+                            className={`px-4 py-2 rounded transition transform duration-150 cursor-pointer ${showUsers ? 'bg-blue-600 text-white' : 'bg-neutral-200 dark:bg-neutral-500'} hover:shadow-md hover:scale-105`}
                             onClick={() => { setShowUsers(true); setShowDenuncias(false); }}
                         >
                             Ver lista de usuários
                         </button>
                         <button
-                            className={`px-4 py-2 rounded transition transform duration-150 cursor-pointer ${showDenuncias ? 'bg-blue-600 text-white' : 'bg-white dark:bg-neutral-900'} hover:shadow-md hover:scale-105`}
+                            className={`px-4 py-2 rounded transition transform duration-150 cursor-pointer ${showDenuncias ? 'bg-blue-600 text-white' : 'bg-neutral-200 dark:bg-neutral-500'} hover:shadow-md hover:scale-105`}
                             onClick={() => { setShowDenuncias(true); setShowUsers(false); }}
                         >
                             Ver lista de reclamações
                         </button>
                     </div>
+
+                    {(showUsers || showDenuncias) && (
+                        <div className="mb-4 w-full flex justify-center">
+                            <input
+                                type="text"
+                                value={searchTerm}
+                                onChange={e => setSearchTerm(e.target.value)}
+                                placeholder="Buscar (usuarios: nome, email, telefone, CPF, ID)  |  reclamações: título, categoria, empresa, ID"
+                                className="w-full md:w-1/2 px-3 py-2 border rounded shadow-sm bg-white dark:bg-neutral-800 text-sm dark:text-white"
+                            />
+                        </div>
+                    )}
 
                     {showUsers && (
                         <div className="overflow-x-auto w-full">
@@ -113,7 +126,17 @@ function Gerenciamento() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white dark:bg-neutral-800 divide-y divide-gray-200 dark:divide-neutral-700">
-                                    {users.map(u => (
+                                    {users
+                                        .filter(u => {
+                                            const q = searchTerm.trim().toLowerCase();
+                                            if (!q) return true;
+                                            return String(u.idUsuario).toLowerCase().includes(q)
+                                                || (u.nomeUsuario || '').toLowerCase().includes(q)
+                                                || (u.emailUsuario || '').toLowerCase().includes(q)
+                                                || (u.telefoneUsuario || '').toLowerCase().includes(q)
+                                                || (u.cpfUsuario || '').toLowerCase().includes(q);
+                                        })
+                                        .map(u => (
                                         <tr key={u.idUsuario}>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{u.idUsuario}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-200">{u.nomeUsuario}</td>
@@ -161,15 +184,31 @@ function Gerenciamento() {
                             {denuncias.length === 0 && (
                                 <div className="bg-white dark:bg-neutral-900 rounded-lg border p-6 shadow-xl text-center">Nenhuma reclamação encontrada.</div>
                             )}
-                            {denuncias.map(d => (
-                                <div key={d.idDenuncia} className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-4 shadow">
-                                    <h2 className="font-bold text-lg dark:text-white">{d.titulo}</h2>
-                                    <p className="text-sm text-gray-500">Categoria: {d.categoria}</p>
-                                    {d.nomeEmpresa && <p className="text-sm">Empresa: {d.nomeEmpresa}</p>}
-                                    {d.descricao && <p className="mt-2 text-gray-700 dark:text-gray-300">{d.descricao}</p>}
-                                    <p className="mt-2 text-xs text-gray-400">Usuário ID: {d.idUsuario}</p>
-                                </div>
-                            ))}
+                            {denuncias
+                                .filter(d => {
+                                    const q = searchTerm.trim().toLowerCase();
+                                    if (!q) return true;
+                                    return String(d.idDenuncia).toLowerCase().includes(q)
+                                        || String(d.idUsuario).toLowerCase().includes(q)
+                                        || (d.titulo || '').toLowerCase().includes(q)
+                                        || (d.categoria || '').toLowerCase().includes(q)
+                                        || (d.nomeEmpresa || '').toLowerCase().includes(q)
+                                        || (d.descricao || '').toLowerCase().includes(q);
+                                })
+                                .map(d => (
+                                    <div key={d.idDenuncia} className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-4 shadow">
+                                        <div className="flex items-start justify-between">
+                                            <h2 className="font-bold text-lg dark:text-white">{d.titulo}</h2>
+                                            <span className="text-xs text-gray-400 ml-2">ID: {d.idDenuncia}</span>
+                                        </div>
+                                            <div className="flex flex-wrap gap-4 items-center text-sm text-gray-500 dark:text-gray-400">
+                                                <span>Categoria: <span className="text-gray-700 dark:text-gray-200">{d.categoria}</span></span>
+                                                {d.nomeEmpresa && <span>Empresa: <span className="text-gray-700 dark:text-gray-200">{d.nomeEmpresa}</span></span>}
+                                            </div>
+                                            {d.descricao && <p className="mt-2 text-gray-700 dark:text-gray-300">{d.descricao}</p>}
+                                            <p className="mt-2 text-xs text-gray-400">Usuário ID: {d.idUsuario}</p>
+                                    </div>
+                                ))}
                         </div>
                     )}
                 </div>
