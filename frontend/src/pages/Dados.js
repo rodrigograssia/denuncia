@@ -1,12 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Topbar from '../components/TopBar';
-import LinksFooter from '../components/LinksFooter';
 import axios from 'axios';
 import Label from '../components/Label';
 import CampoTexto from '../components/Campos';
 import CampoSenha from '../components/CampoSenha';
 import Botao from '../components/Botao';
+import Topbar from '../components/TopBar';
+import Footer from '../components/Footer';
+
+// Normaliza CPF (remove qualquer caractere que não seja dígito)
+function normalizeCpf(cpf) {
+    return (cpf || '').replace(/\D/g, '');
+}
+
+// Normaliza telefone para dígitos apenas (ex: (11) 98765-4321 -> 11987654321)
+function normalizePhone(phone) {
+    return (phone || '').replace(/\D/g, '');
+}
 
 function Dados() {
     const navigate = useNavigate();
@@ -40,9 +50,15 @@ function Dados() {
         .catch(err => {
             console.error('Erro ao buscar usuário:', err?.response?.data || err.message);
             setLoading(false);
-            alert('Não foi possível carregar seus dados. Faça login novamente.');
+            if (err?.response?.status === 401) {
+                // token inválido ou expirado
+                localStorage.removeItem('token');
+                navigate('/login');
+            } else {
+                alert('Não foi possível carregar seus dados. Faça login novamente.');
+            }
         });
-    }, []);
+    }, [navigate]);
 
     const handleUpdate = async () => {
         if (!id) {
@@ -56,9 +72,9 @@ function Dados() {
                 idUsuario: id,
                 nomeUsuario: nome,
                 emailUsuario: email,
-                telefoneUsuario: telefone,
+                telefoneUsuario: normalizePhone(telefone),
                 senhaUsuario: senha,
-                cpfUsuario: cpf
+                cpfUsuario: normalizeCpf(cpf)
             };
 
             const res = await axios.put(`http://localhost:8080/usuario/${id}`, body, {
@@ -67,21 +83,20 @@ function Dados() {
 
             if (res && res.data) {
                 const u = res.data;
-                setNome(u.nomeUsuario || nome);
-                setEmail(u.emailUsuario || email);
-                setTelefone(u.telefoneUsuario || telefone);
-                setCpf(u.cpfUsuario || cpf);
+                setNome(u.nomeUsuario || '');
+                setEmail(u.emailUsuario || '');
+                setTelefone(u.telefoneUsuario || '');
+                setCpf(u.cpfUsuario || '');
                 setSenha('');
+                alert('Dados atualizados com sucesso.');
             }
-            window.location.reload();
         } catch (error) {
             console.error('Erro ao atualizar:', error?.response?.data || error.message);
-            const msg = error?.response?.data?.error || 'Erro ao atualizar dados. Veja o console para detalhes.';
+            const msg = error?.response?.data?.error || 'Erro ao atualizar dados. Tente novamente mais tarde.';
             alert(msg);
         }
     };
 
-    // Deleta a conta do usuário autenticado
     const handleDelete = async () => {
         if (!id) {
             alert('Usuário não identificado. Faça login novamente.');
@@ -97,13 +112,12 @@ function Dados() {
                 headers: { Authorization: token ? `Bearer ${token}` : '' }
             });
 
-            // Limpa token e redireciona para a home
             localStorage.removeItem('token');
             alert('Conta excluída com sucesso.');
             navigate('/');
         } catch (error) {
             console.error('Erro ao excluir conta:', error?.response?.data || error.message);
-            const msg = error?.response?.data?.error || 'Erro ao excluir conta. Veja o console para detalhes.';
+            const msg = error?.response?.data?.error || 'Erro ao excluir conta. Tente novamente mais tarde.';
             alert(msg);
         }
     };
@@ -112,7 +126,8 @@ function Dados() {
         <div className="m-0 p-0 min-h-screen dark:bg-neutral-800 flex flex-col">
             <header><Topbar/></header>
 
-            <div className="flex-grow flex flex-col items-center pt-20 pb-28">
+            <div className="flex-1 flex flex-col pt-6 pb-20 md:pt-8 w-full px-4 md:px-8 items-center">
+                <Botao variant="back" to="/">Voltar</Botao>
                 <h1 className="dark:text-white font-bold text-xl sm:text-3xl text-center mb-6">Meus Dados</h1>
 
                 <div className="w-full max-w-[640px] bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-6 shadow-xl">
@@ -159,12 +174,7 @@ function Dados() {
                 </div>
             </div>
 
-            <footer className="fixed bottom-0 left-0 w-full bg-[#eeeeee] dark:bg-neutral-900 py-4 px-4 md:py-5 md:px-8 z-50">
-                <div className="flex flex-col items-center gap-3 md:flex-row md:justify-between md:gap-4">
-                    <LinksFooter />
-                    <p className="text-black dark:text-white text-xs sm:text-sm md:text-base text-center md:text-right leading-tight">© 2025 denunc.ia – Todos os direitos reservados</p>
-                </div>
-            </footer>
+            <Footer />
         </div>
     );
 }

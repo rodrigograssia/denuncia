@@ -5,8 +5,18 @@ import Botao from "../components/Botao";
 import CampoSenha from "../components/CampoSenha";
 import CampoTexto from "../components/Campos";
 import Label from "../components/Label";
-import Title from "../components/Title";
-import DarkModeToggle from "../components/DarkModeToggle";
+import Titulo from "../components/Titulo";
+import DarkModeToggle from "../components/DarkMode";
+
+// Normaliza CPF (remove qualquer caractere que não seja dígito)
+function normalizeCpf(cpf) {
+  return (cpf || "").replace(/\D/g, "");
+}
+
+// Normaliza telefone para dígitos apenas (ex: (11) 98765-4321 -> 11987654321)
+function normalizePhone(phone) {
+  return (phone || '').replace(/\D/g, '');
+}
 
 
 function Cadastro() {
@@ -25,10 +35,11 @@ function Cadastro() {
     }
 
     try {
+      const cpfNormalizado = normalizeCpf(cpf);
       const response = await axios.post("http://localhost:8080/usuario/cadastro", {
-        cpfUsuario: cpf,
+        cpfUsuario: cpfNormalizado,
         nomeUsuario: nome,
-        telefoneUsuario: telefone,
+        telefoneUsuario: normalizePhone(telefone),
         emailUsuario: email,
         senhaUsuario: senha
       });
@@ -49,7 +60,7 @@ function Cadastro() {
         <DarkModeToggle />
       </div>
       
-      <Title>denunc.ia</Title>
+      <Titulo>denunc.ia</Titulo>
 
       <div className="flex flex-col items-center gap-3 border-2 border-gray-300 dark:border-neutral-600 rounded-lg p-4 sm:p-6 w-full max-w-[400px] bg-white dark:bg-neutral-900 shadow-lg">
         <h1 className="font-semibold text-2xl sm:text-3xl text-gray-900 dark:text-white">Cadastro</h1>
@@ -93,7 +104,7 @@ function Cadastro() {
       </div>
       <h3 className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-2">
           Os campos com * são obrigatórios
-        </h3>
+      </h3>
     </div>
   );
 }

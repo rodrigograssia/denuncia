@@ -7,6 +7,7 @@ import Denuncia from "./pages/Denuncia";
 import Verificacao from "./pages/Verificacao";
 import MinhasDenuncias from "./pages/MinhasDenuncias";
 import Dados from "./pages/Dados";
+import Gerenciamento from "./pages/Gerenciamento";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/verificacao" element={<Verificacao />} />
       <Route path="/minhas-denuncias" element={<MinhasDenuncias />} />
       <Route path="/dados" element={<Dados />} />
+      <Route path="/gerenciamento" element={<Gerenciamento />} />
     </Routes>
   );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-// import { twMerge } from "tailwind-merge";
 
 const dicas = [
     "Nunca pague taxas antecipadas por presentes.",

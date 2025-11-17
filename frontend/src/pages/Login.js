@@ -5,9 +5,13 @@ import Botao from "../components/Botao";
 import CampoSenha from "../components/CampoSenha";
 import CampoTexto from "../components/Campos";
 import Label from "../components/Label";
-import Title from "../components/Title";
-import DarkModeToggle from "../components/DarkModeToggle";
+import Titulo from "../components/Titulo";
+import DarkModeToggle from "../components/DarkMode";
 
+// Normaliza CPF (remove qualquer caractere que não seja dígito)
+function normalizeCpf(cpf) {
+  return (cpf || "").replace(/\D/g, "");
+}
 
 function Login() {
   const [cpf, setCpf] = useState("");
@@ -16,17 +20,30 @@ function Login() {
 
   const handleLogin = async () => {
     try {
+      // Normaliza o CPF removendo qualquer caractere que não seja dígito
+      const cpfNormalizado = normalizeCpf(cpf);
       const response = await axios.post("http://localhost:8080/usuario/login", {
-        cpfUsuario: cpf,
+        cpfUsuario: cpfNormalizado,
         senhaUsuario: senha
       });
       console.log("Login bem-sucedido:", response.data);
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error) {
+      // Log para desenvolvedor (não expor ao usuário)
       console.error("Erro no login:", error);
-      alert("CPF ou senha incorretos!");
-    }
+      if (error?.response) {
+        // Erro retornado pelo servidor — mostra mensagem amigável do back (se existir)
+        const serverMsg = error.response.data?.error || error.response.data || error.message;
+        alert(`Erro: ${serverMsg}`);
+      } else if (error?.request) {
+        // Problema de rede / não foi possível contatar o servidor
+        alert('Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.');
+      } else {
+        // Erro inesperado
+        alert('Ocorreu um erro inesperado. Tente novamente mais tarde.');
+      }
+      }
   };
 
   return (
@@ -36,7 +53,7 @@ function Login() {
         <DarkModeToggle />
       </div>
       
-      <Title>denunc.ia</Title>
+      <Titulo>denunc.ia</Titulo>
 
       <div className="flex flex-col items-center gap-3 border-2 border-gray-300 dark:border-neutral-600 rounded-lg p-6 w-full max-w-[400px] bg-white dark:bg-neutral-900 shadow-lg">
         <h1 className="font-semibold text-3xl text-gray-900 dark:text-white">Login</h1>

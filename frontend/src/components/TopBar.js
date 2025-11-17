@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
-import DarkModeToggle from "./DarkModeToggle";
+import DarkModeToggle from "./DarkMode";
 
 const profileLinkBaseStyles = [
   'flex items-center justify-center',
@@ -29,9 +29,10 @@ const linkBaseStyles = [
   'sm:text-lg'
 ];
 
-const TopBar = forwardRef((props, ref) => {
+const Topbar = forwardRef((props, ref) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
@@ -57,6 +58,20 @@ const TopBar = forwardRef((props, ref) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLogged(!!token);
+    // if logged, fetch /usuario/me to check role
+    if (token) {
+      (async () => {
+        try {
+          const res = await fetch('http://localhost:8080/usuario/me', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          if (!res.ok) return;
+          const data = await res.json();
+          setIsAdmin(data?.role === 'ADMIN');
+        } catch (e) {
+        }
+      })();
+    }
   }, [showDropdown]);
 
   const handleLogout = () => {
@@ -64,8 +79,9 @@ const TopBar = forwardRef((props, ref) => {
     alert("Logout realizado com sucesso!");
     localStorage.removeItem("token");
     setIsLogged(false);
+    setIsAdmin(false);
     setShowDropdown(false);
-    navigate("/");
+    window.location.reload();
   };
 
   const topBarClasses = [
@@ -100,6 +116,11 @@ const TopBar = forwardRef((props, ref) => {
         <li className="ml-4 sm:ml-8">
           <Link to="/denuncia" className={twMerge(linkBaseStyles)}>Denunciar Golpe</Link>
         </li>
+        {isAdmin && (
+          <li className="ml-4 sm:ml-8">
+            <Link to="/gerenciamento" className={twMerge(linkBaseStyles)}>Gerenciamento</Link>
+          </li>
+        )}
         <li className="ml-4 sm:ml-8">
           <button
             onClick={toggleDropdown}
@@ -149,4 +170,4 @@ const TopBar = forwardRef((props, ref) => {
   );
 });
 
-export default TopBar;
+export default Topbar;

@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Botao from "../components/Botao";
 import CampoTexto from "../components/Campos";
-import Title from "../components/Title";
-import DarkModeToggle from "../components/DarkModeToggle";
+import Titulo from "../components/Titulo";
+import DarkModeToggle from "../components/DarkMode";
 
 
 function Verificacao() {
@@ -14,11 +14,11 @@ function Verificacao() {
   const handleVerificacao = async () => {
     try {
       await axios.post(`http://localhost:8080/usuario/verificar?codigo=${codigo}`);
-      alert("Conta verificada com sucesso!");
+      alert('Conta verificada com sucesso!');
       navigate("/login");
     } catch (error) {
       console.error("Erro na verificação:", error);
-      alert("Código de verificação incorreto ou expirado!");
+  alert('Código de verificação incorreto ou expirado!');
     }
   };
 
@@ -28,7 +28,7 @@ function Verificacao() {
         <DarkModeToggle />
       </div>
       
-      <Title>denunc.ia</Title>
+      <Titulo>denunc.ia</Titulo>
 
       <div className="flex flex-col items-center gap-3 border-2 border-gray-300 dark:border-neutral-600 rounded-lg p-4 sm:p-6 w-full max-w-[400px] bg-white dark:bg-neutral-900 shadow-lg">
         <h1 className="font-semibold text-2xl sm:text-3xl text-gray-900 dark:text-white">Insira seu código</h1>

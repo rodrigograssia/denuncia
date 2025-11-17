@@ -3,7 +3,7 @@ import Topbar from "../components/TopBar";
 import Navbar from "../components/Navbar";
 import Botao from "../components/Botao";
 import Dicas from "../components/Dicas";
-import LinksFooter from "../components/LinksFooter";
+import Footer from "../components/Footer";
 
 function Home() {
   return (
@@ -83,18 +83,12 @@ function Home() {
             </div>
         </div>
 
-        <div className="w-full pb-6 p-4 flex items-center ">
+        <div className="w-full pb-20 p-4 flex items-center">
             <div id="dicas" className="px-10 w-md sm:max-w-4xl mx-auto my-6 scroll-my-12 border border-gray-300 dark:border-neutral-600 w-full rounded-2xl shadow-lg">
                 <Dicas />
             </div>
         </div>
-
-        <footer className="w-full bg-[#eeeeee] dark:bg-neutral-900 py-4 px-4 md:py-5 md:px-8 mt-auto">
-          <div className="flex flex-col items-center gap-3 md:flex-row md:justify-between md:gap-4">
-            <LinksFooter />
-            <p className="text-black dark:text-white text-xs sm:text-sm md:text-base text-center md:text-right leading-tight">© 2025 denunc.ia – Todos os direitos reservados</p>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </div>
   );
