@@ -32,6 +32,7 @@ function Verificacao() {
 
       <div className="flex flex-col items-center gap-3 border-2 border-gray-300 dark:border-neutral-600 rounded-lg p-4 sm:p-6 w-full max-w-[400px] bg-white dark:bg-neutral-900 shadow-lg">
         <h1 className="font-semibold text-2xl sm:text-3xl text-gray-900 dark:text-white">Insira seu código</h1>
+        <h3 className="mb-6 dark:text-white">(Verifique a caixa de spam)</h3>
         <div className="flex flex-col items-start w-full">
           <CampoTexto 
             className="mb-3 dark:bg-neutral-800 dark:text-white"

@@ -88,7 +88,7 @@ function AreaTelefone() {
           </div>
 
           {resultado && (
-            <div className="mt-4 p-3 bg-white dark:bg-neutral-900 border rounded">
+            <div className="mt-4 p-3 bg-white dark:bg-neutral-900 dark:text-white border rounded">
               <p>Fraud score: {resultado.fraudScore ?? resultado.fraud_score ?? '—'}</p>
               <p>Recent abuse: {resultado.recentAbuse ?? resultado.recent_abuse ? 'Sim' : 'Não'}</p>
               <p>VOIP: {resultado.VOIP ?? resultado.voip ? 'Sim' : 'Não'}</p>
