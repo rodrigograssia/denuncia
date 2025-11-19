@@ -32,6 +32,8 @@ public class Denuncia {
     private String nomeEmpresa;
     @Column(name = "id_usuario", nullable = false)
     private Long idUsuario;
+    @Column(name = "status", unique = false, nullable = false)
+    private String status;
 
 
 }

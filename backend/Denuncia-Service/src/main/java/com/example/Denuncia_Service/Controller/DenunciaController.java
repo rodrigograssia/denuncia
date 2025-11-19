@@ -46,6 +46,20 @@ public class DenunciaController {
         return ResponseEntity.noContent().build();
     }
 
+    @PatchMapping("/{id}/concluir")
+    public ResponseEntity<Denuncia> concluirDenuncia(@PathVariable Long id,
+                                                     @RequestHeader("Authorization") String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).build();
+        }
+        // valida token (vai lançar exceção se inválido)
+        jwtUtil.getUserIdFromToken(authHeader.replace("Bearer ", ""));
+
+        // atualiza apenas a coluna status para evitar regravar outros campos que possam ser nulos
+        Denuncia updated = denunciaService.concluirPorId(id);
+        return ResponseEntity.ok(updated);
+    }
+
     @GetMapping("/listar")
     public ResponseEntity<List<Denuncia>> listarDenuncias(@RequestHeader(value = "Authorization", required = false) String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

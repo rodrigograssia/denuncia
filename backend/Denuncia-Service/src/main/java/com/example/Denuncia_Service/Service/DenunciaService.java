@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.Denuncia_Service.Entity.Denuncia;
 import com.example.Denuncia_Service.Repository.DenunciaRepository;
@@ -28,6 +29,13 @@ public class DenunciaService {
 
     public Denuncia buscarPorId(Long idDenuncia) {
        return denunciaRepository.findById(idDenuncia).orElseThrow(()-> new RuntimeException("Denuncia não encontrada"));
+    }
+    
+    @Transactional
+    public Denuncia concluirPorId(Long id) {
+        // atualiza apenas a coluna de status para evitar regravar campos nulos/transientes
+        denunciaRepository.updateStatusById(id, "CONCLUÍDA");
+        return buscarPorId(id);
     }
     public List<Denuncia> buscarPorNome(String nomeEmpresa){
         return denunciaRepository.findByNomeEmpresa(nomeEmpresa);

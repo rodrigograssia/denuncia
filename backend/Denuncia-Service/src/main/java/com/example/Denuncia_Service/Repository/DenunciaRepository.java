@@ -14,5 +14,9 @@ public interface DenunciaRepository extends JpaRepository<Denuncia, Long> {
     Optional<Denuncia> findById(Long idDenuncia);
     List<Denuncia> findByNomeEmpresa(String nomeEmpresa);
     
+    @org.springframework.data.jpa.repository.Modifying
+    @org.springframework.data.jpa.repository.Query("UPDATE Denuncia d SET d.status = :status WHERE d.idDenuncia = :id")
+    int updateStatusById(@org.springframework.data.repository.query.Param("id") Long id, @org.springframework.data.repository.query.Param("status") String status);
+    
 
 }

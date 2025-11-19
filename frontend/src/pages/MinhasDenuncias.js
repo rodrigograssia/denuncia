@@ -68,7 +68,7 @@ function MinhasDenuncias() {
                             type="text"
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
-                            placeholder="Buscar por título, categoria, empresa, descrição ou ID"
+                            placeholder="Buscar por título, categoria, empresa, descrição, ID ou status"
                             className="w-full md:w-2/3 px-3 py-2 border rounded shadow-sm bg-white dark:bg-neutral-800 text-sm dark:text-white"
                         />
                     </div>
@@ -96,19 +96,24 @@ function MinhasDenuncias() {
                                         || (d.titulo || '').toLowerCase().includes(q)
                                         || (d.categoria || '').toLowerCase().includes(q)
                                         || (d.nomeEmpresa || '').toLowerCase().includes(q)
-                                        || (d.descricao || '').toLowerCase().includes(q);
+                                        || (d.descricao || '').toLowerCase().includes(q)
+                                        || (d.status || '').toLowerCase().includes(q);
                                 })
                                 .map(d => (
                                     <div key={d.idDenuncia} className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-4 shadow">
                                         <div className="flex items-start justify-between">
                                             <h2 className="font-bold text-lg dark:text-white">{d.titulo}</h2>
-                                            <span className="text-xs text-gray-400 ml-2">ID: {d.idDenuncia}</span>
+                                            <span className="text-xs text-gray-400">ID: {d.idDenuncia}</span>
                                         </div>
                                         <div className="flex flex-wrap gap-4 items-center text-sm text-gray-400">
                                             <span>Categoria: <span className="text-gray-700 dark:text-gray-200">{d.categoria}</span></span>
                                             {d.nomeEmpresa && <span>Empresa: <span className="text-gray-700 dark:text-gray-200">{d.nomeEmpresa}</span></span>}
                                         </div>
                                         {d.descricao && <p className="mt-2 text-gray-600 dark:text-gray-300">{d.descricao}</p>}
+                                        <div className="flex items-center gap-3 mt-2">
+                                            {d.status === 'PENDENTE' && <p className="text-blue-600">{d.status}</p>}
+                                            {d.status === 'CONCLUÍDA' && <p className="text-green-600">{d.status}</p>}
+                                        </div>
                                     </div>
                                 ))}
                         </div>
