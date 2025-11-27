@@ -1,12 +1,13 @@
 package com.example.Denuncia_Service.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+ 
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RespostaApiTelefoneDTO {
     @JsonProperty("fraud_score")
     private int fraudScore;

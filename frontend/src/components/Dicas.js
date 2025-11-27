@@ -21,7 +21,7 @@ const dicaCores = [
 
 function SecaoDicas() {
     return (
-        <section id="dicas" className="w-full px-4 sm:px-8 max-w-7xl mx-auto py-12 sm:py-16">
+        <section id="dicas" className="w-full px-8 sm:px-12 py-8 sm:py-12">
             
             <div className="flex flex-col gap-8 w-full">
                 

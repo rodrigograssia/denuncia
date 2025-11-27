@@ -19,9 +19,12 @@ function CampoSenha({ placeholder = "************", className, ...props }) {
         type="button"
         onClick={toggleVisible}
         aria-label={visible ? 'Ocultar senha' : 'Mostrar senha'}
-        className="absolute right-2 translate-y-[70%]"
+        className="absolute right-2 translate-y-[50%]"
       >
           <img
+            loading="lazy"
+            width="20"
+            height="20"
             src={visible ? 'images/olho_aberto.svg' : 'images/olho_fechado.svg'}
             alt={visible ? 'Ocultar senha' : 'Mostrar senha'}
             className="w-5 h-5 block filter dark:invert"

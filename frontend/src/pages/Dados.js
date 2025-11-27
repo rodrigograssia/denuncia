@@ -8,15 +8,8 @@ import Botao from '../components/Botao';
 import Topbar from '../components/TopBar';
 import Footer from '../components/Footer';
 
-// Normaliza CPF (remove qualquer caractere que não seja dígito)
-function normalizeCpf(cpf) {
-    return (cpf || '').replace(/\D/g, '');
-}
-
-// Normaliza telefone para dígitos apenas (ex: (11) 98765-4321 -> 11987654321)
-function normalizePhone(phone) {
-    return (phone || '').replace(/\D/g, '');
-}
+const normalizeCpf = (cpf) => (cpf || '').toString().replace(/\D/g, '').slice(0, 11);
+const normalizePhone = (phone) => (phone || '').toString().replace(/\D/g, '').slice(0, 15);
 
 function Dados() {
     const navigate = useNavigate();
@@ -48,17 +41,32 @@ function Dados() {
             setLoading(false);
         })
         .catch(err => {
-            console.error('Erro ao buscar usuário:', err?.response?.data || err.message);
             setLoading(false);
             if (err?.response?.status === 401) {
-                // token inválido ou expirado
                 localStorage.removeItem('token');
+                alert('Sessão expirada. Faça login novamente.');
                 navigate('/login');
+            } else if (err?.request) {
+                alert('Erro de conexão. Verifique sua internet.');
             } else {
-                alert('Não foi possível carregar seus dados. Faça login novamente.');
+                alert('Erro no servidor. Tente novamente mais tarde.');
             }
         });
     }, [navigate]);
+
+    const handleApiError = (err) => {
+        if (err?.response?.status === 401) {
+            localStorage.removeItem('token');
+            alert('Sessão expirada. Faça login novamente.');
+            navigate('/login');
+            return;
+        }
+        if (err?.request) {
+            alert('Erro de conexão. Verifique sua internet.');
+            return;
+        }
+        alert('Erro no servidor. Tente novamente mais tarde.');
+    };
 
     const handleUpdate = async () => {
         if (!id) {
@@ -91,9 +99,7 @@ function Dados() {
                 alert('Dados atualizados com sucesso.');
             }
         } catch (error) {
-            console.error('Erro ao atualizar:', error?.response?.data || error.message);
-            const msg = error?.response?.data?.error || 'Erro ao atualizar dados. Tente novamente mais tarde.';
-            alert(msg);
+            handleApiError(error);
         }
     };
 
@@ -109,16 +115,14 @@ function Dados() {
         const token = localStorage.getItem('token');
         try {
             await axios.delete(`http://localhost:8080/usuario/${id}`, {
-                headers: { Authorization: token ? `Bearer ${token}` : '' }
+                headers: { Authorization: `Bearer ${token}` }
             });
 
             localStorage.removeItem('token');
             alert('Conta excluída com sucesso.');
             navigate('/');
         } catch (error) {
-            console.error('Erro ao excluir conta:', error?.response?.data || error.message);
-            const msg = error?.response?.data?.error || 'Erro ao excluir conta. Tente novamente mais tarde.';
-            alert(msg);
+            handleApiError(error);
         }
     };
 
@@ -148,7 +152,7 @@ function Dados() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <Label>Telefone</Label>
-                                        <CampoTexto value={telefone} mask="phone" onChange={e => setTelefone(e.target.value)} />
+                                    <CampoTexto value={telefone} mask="phone" onChange={e => setTelefone(e.target.value)} />
                                 </div>
                                 <div>
                                     <Label>CPF</Label>
@@ -178,4 +182,5 @@ function Dados() {
         </div>
     );
 }
+
 export default Dados;

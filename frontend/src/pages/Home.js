@@ -76,12 +76,6 @@ function Home() {
                                 de e-commerce ou pelos Correios para ganhar credibilidade.
                             </p>
                             <p>
-                                Durante a conversa, eles confirmam suas informações e te orientam a
-                                fazer a transação via Pix ou link de pagamento. Depois do envio do
-                                dinheiro, o contato te bloqueia e some com o valor transferido. Em casos mais 
-                                graves, os criminosos podem clonar cartões ou roubar dados bancários completos.
-                            </p>
-                            <p>
                                 Os valores cobrados costumam ser baixos propositalmente, geralmente entre 
                                 R$ 10 e R$ 50, para não levantar grandes suspeitas. Porém, quando multiplicado 
                                 por centenas de vítimas, o prejuízo total é significativo.
@@ -95,21 +89,23 @@ function Home() {
                             </p>
                         </div>
                     </div>
-                    <div className="w-4/5 lg:w-2/5 flex justify-center"> 
-                        <img 
-                            src="/images/presente.png" 
-                            alt="Presente do golpe" 
-                            className="w-full"
-                        />
+                    <div className="w-4/5 lg:w-2/5 flex justify-center h-56 sm:h-80 lg:h-96"> 
+                      <picture>
+                        <source type="image/webp" srcSet="/images/presente.webp" />
+                        <img src="/images/presente.png" alt="Presente do golpe" width="1200" height="800" className="w-full h-full object-contain" loading="lazy"/>
+                      </picture>
                     </div>
                 </section>
             </div>
         </div>
 
-        <div className="w-full pb-20 p-4 flex items-center">
-            <div id="dicas" className="px-10 w-md sm:max-w-4xl mx-auto my-6 scroll-my-12 border border-gray-300 dark:border-neutral-600 w-full rounded-2xl shadow-lg">
+        <div className="w-full py-20 flex flex-col items-center gap-10">
+            <div id="dicas" className="w-md sm:max-w-4xl border border-gray-300 dark:border-neutral-600 w-full rounded-2xl shadow-lg">
                 <Dicas />
             </div>
+            <Botao variant="denuncia" className="rounded-lg w-60 py-1 sm:py-2 px-3 sm:px-6 text-xl sm:text-2xl" to="/denuncia">
+                  Fazer uma denúncia
+                </Botao>
         </div>
         <Footer />
       </div>

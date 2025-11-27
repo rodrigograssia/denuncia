@@ -8,16 +8,24 @@ import Label from "../components/Label";
 import Titulo from "../components/Titulo";
 import DarkModeToggle from "../components/DarkMode";
 
-// Normaliza CPF (remove qualquer caractere que não seja dígito)
-function normalizeCpf(cpf) {
-  return (cpf || "").replace(/\D/g, "");
-}
+const normalizeCpf = (cpf) => (cpf || '').toString().replace(/\D/g, '').slice(0, 11);
+const normalizePhone = (phone) => (phone || '').toString().replace(/\D/g, '').slice(0, 15);
 
-// Normaliza telefone para dígitos apenas (ex: (11) 98765-4321 -> 11987654321)
-function normalizePhone(phone) {
-  return (phone || '').replace(/\D/g, '');
-}
 
+function handleRequestError(err, defaultMsg = 'Erro ao realizar operação. Tente novamente mais tarde.') {
+  console.error(defaultMsg, err?.response?.data || err?.message || err);
+  if (err?.response?.status === 401) {
+    localStorage.removeItem('token');
+    alert('Sessão expirada. Faça login novamente.');
+    window.location.href = '/login';
+    return;
+  }
+  if (err?.request) {
+    alert('Erro de conexão. Tente novamente.');
+    return;
+  }
+  alert(defaultMsg);
+}
 
 function Cadastro() {
   const [cpf, setCpf] = useState("");
@@ -36,21 +44,25 @@ function Cadastro() {
 
     try {
       const cpfNormalizado = normalizeCpf(cpf);
-      const response = await axios.post("http://localhost:8080/usuario/cadastro", {
+      const response = await axios.post('http://localhost:8080/usuario/cadastro', {
         cpfUsuario: cpfNormalizado,
         nomeUsuario: nome,
         telefoneUsuario: normalizePhone(telefone),
         emailUsuario: email,
-        senhaUsuario: senha
+        senhaUsuario: senha,
       });
+
       console.log("Cadastro bem-sucedido:", response.data);
       alert("Cadastro realizado! Verifique seu e-mail para ativar sua conta.");
       navigate("/verificacao");
     } catch (error) {
-      console.error("Erro completo:", error);
-      console.error("Resposta do servidor:", error.response?.data);
-      const mensagemErro = error.response?.data?.message || error.response?.data || "Erro ao realizar cadastro. Verifique os dados e tente novamente.";
-      alert(mensagemErro);
+      if (error?.response) {
+        console.error("Resposta do servidor:", error.response.data);
+        const mensagemErro = error.response.data?.message || error.response.data || "Erro ao realizar cadastro. Verifique os dados e tente novamente.";
+        alert(mensagemErro);
+      } else {
+        handleRequestError(error, 'Erro ao realizar cadastro.');
+      }
     }
   };
 
@@ -59,35 +71,35 @@ function Cadastro() {
       <div className="absolute top-4 right-4">
         <DarkModeToggle />
       </div>
-      
+
       <Titulo>denunc.ia</Titulo>
 
-      <div className="flex flex-col items-center gap-3 border-2 border-gray-300 dark:border-neutral-600 rounded-lg p-4 sm:p-6 w-full max-w-[400px] bg-white dark:bg-neutral-900 shadow-lg">
-        <h1 className="font-semibold text-2xl sm:text-3xl text-gray-900 dark:text-white">Cadastro</h1>
+      <div className="flex flex-col items-center gap-3 border-2 border-gray-300 dark:border-neutral-600 rounded-lg p-4 sm:p-6 w-full max-w-[360px] bg-white dark:bg-neutral-900 shadow-lg">
+        <h1 className="font-semibold text-2xl text-gray-900 dark:text-white">Cadastro</h1>
         <div className="flex flex-col items-start w-full">
           <Label>CPF*<br /></Label>
           <CampoTexto placeholder="XXX.XXX.XXX-XX" className="mb-3 dark:bg-neutral-800 dark:text-white" mask="cpf" value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
+            onChange={(e) => setCpf(e.target.value)}
           />
           <Label>Nome Completo*<br /></Label>
           <CampoTexto placeholder="Fulano de Tal" className="mb-3 dark:bg-neutral-800 dark:text-white" value={nome}
-          onChange={(e) => setNome(e.target.value)}
+            onChange={(e) => setNome(e.target.value)}
           />
           <Label>Telefone*<br /></Label>
           <CampoTexto placeholder="(11) 98765-4321" className="mb-3 dark:bg-neutral-800 dark:text-white" mask="phone" value={telefone}
-          onChange={(e) => setTelefone(e.target.value)}
+            onChange={(e) => setTelefone(e.target.value)}
           />
           <Label>Email*<br /></Label>
           <CampoTexto placeholder="fulano@gmail.com" className="mb-3 dark:bg-neutral-800 dark:text-white" value={email}
-          onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <Label>Criar senha*<br /></Label>
-          <CampoSenha className="mb-3 dark:bg-neutral-800 dark:text-white" value={senha} 
-          onChange={(e) => setSenha(e.target.value)}
+          <Label>Criar senha (até 6 dígitos)*<br /></Label>
+          <CampoSenha className="mb-3 dark:bg-neutral-800 dark:text-white" value={senha}
+            onChange={(e) => setSenha(e.target.value)}
           />
           <Label>Confirmar senha*<br /></Label>
           <CampoSenha className="mb-3 dark:bg-neutral-800 dark:text-white" value={confirmarSenha}
-          onChange={(e) => setConfirmarSenha(e.target.value)}
+            onChange={(e) => setConfirmarSenha(e.target.value)}
           />
         </div>
         <div className="flex flex-row gap-2 sm:gap-4 justify-center w-full">

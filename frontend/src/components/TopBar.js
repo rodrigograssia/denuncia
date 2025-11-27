@@ -1,39 +1,14 @@
-import React, { useState, useEffect, forwardRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { twMerge } from "tailwind-merge";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import DarkModeToggle from "./DarkMode";
 
-const profileLinkBaseStyles = [
-  'flex items-center justify-center',
-  'bg-gray-300',
-  'dark:bg-neutral-600', 
-  'w-8',           
-  'h-8',           
-  'sm:w-[2.7rem]',
-  'sm:h-[2.7rem]',
-  'rounded-full', 
-  'cursor-pointer',
-  'relative',
-  'z-20',
-];
+const profileLinkClass = 'flex items-center justify-center bg-gray-300 dark:bg-neutral-600 w-8 h-8 sm:w-[2.7rem] sm:h-[2.7rem] rounded-full cursor-pointer relative z-20';
+const linkClass = 'text-gray-700 dark:text-white font-medium no-underline transition-colors hover:text-[#4a55c7] dark:hover:text-[#5f6ded] text-xs sm:text-lg';
 
-const linkBaseStyles = [
-  'text-gray-700',
-  'dark:text-white',
-  'font-medium', 
-  'no-underline',
-  'transition-colors',
-  'hover:text-[#4a55c7]',
-  'dark:hover:text-[#5f6ded]',
-  'text-xs', 
-  'sm:text-lg'
-];
-
-const Topbar = forwardRef((props, ref) => {
+const Topbar = (props) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
@@ -58,23 +33,30 @@ const Topbar = forwardRef((props, ref) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsLogged(!!token);
-    if (token) {
-      (async () => {
-        try {
-          const res = await fetch('http://localhost:8080/usuario/me', {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          if (!res.ok) return;
-          const data = await res.json();
-          setIsAdmin(data?.role === 'ADMIN');
-        } catch (e) {
-        }
-      })();
-    }
+  }, []);
+
+  useEffect(() => {
+    if (!showDropdown) return;
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const fetchUser = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/usuario/me', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        setIsAdmin(data?.role === 'ADMIN');
+      } catch (e) {
+      }
+    };
+    
+    fetchUser();
+    return () => {};
   }, [showDropdown]);
 
   const handleLogout = () => {
-    // Remove token local e redireciona para a página inicial
     alert("Logout realizado com sucesso!");
     localStorage.removeItem("token");
     setIsLogged(false);
@@ -83,24 +65,10 @@ const Topbar = forwardRef((props, ref) => {
     window.location.reload();
   };
 
-  const topBarClasses = [
-    'flex',
-    'justify-between',
-    'items-center',
-    'w-full',
-    'box-border',
-    'bg-[#eeeeee]',
-    'dark:bg-neutral-900',
-    'relative', 
-    'z-10',     
-    'py-4',
-    'px-2',
-    'md:px-8',
-    'm-0'
-  ];
+  const topBarClass = 'flex justify-between items-center w-full box-border bg-[#eeeeee] dark:bg-neutral-900 relative z-10 py-4 px-2 md:px-8 m-0';
 
   return (
-    <div className={twMerge(topBarClasses)} ref={ref}>
+    <div className={topBarClass}>
       
       <div className="flex items-center">
         <Link to="/" className="text-l sm:text-2xl font-bold text-[#4c71a6] no-underline">
@@ -110,27 +78,28 @@ const Topbar = forwardRef((props, ref) => {
 
       <ul className="flex items-center list-none m-0 p-0 flex-nowrap">
         <li className="ml-2 sm:ml-8">
-          <Link to="/" className={twMerge(linkBaseStyles)}>Home</Link>
+          <Link to="/" className={linkClass}>Home</Link>
         </li>
         <li className="ml-2 sm:ml-8">
-          <Link to="/denuncia" className={twMerge(linkBaseStyles)}>Denunciar
-          </Link>
+          <Link to="/denuncia" className={linkClass}>Denunciar</Link>
         </li>
         {isAdmin && (
           <li className="ml-2 sm:ml-8">
-            <Link to="/gerenciamento" className={twMerge(linkBaseStyles)}>Gerenciamento</Link>
+            <Link to="/gerenciamento" className={linkClass}>Gerenciamento</Link>
           </li>
         )}
         <li className="ml-2 sm:ml-8">
-          <button
+            <button
             onClick={toggleDropdown}
-            className={twMerge(profileLinkBaseStyles, "profile-link-container")}
+            className={profileLinkClass + ' profile-link-container'}
             aria-label="Menu do perfil"
             aria-expanded={showDropdown}
           >
             <img
               src="/images/user.svg"
               alt="Perfil"
+              width="24"
+              height="24"
               className="w-6 h-6 sm:w-8 sm:h-8 p-1" 
             />
           </button>
@@ -168,6 +137,6 @@ const Topbar = forwardRef((props, ref) => {
       </ul>
     </div>
   );
-});
+}
 
 export default Topbar;

@@ -9,6 +9,15 @@
       name="description"
       content="Site criado para combater o Golpe do Presente."
     />
+      <!-- Preload hero image to improve LCP -->
+      <link rel="preload" as="image" href="%PUBLIC_URL%/images/presente.png">
+      <!-- Preconnect to API origin to reduce connection latency during requests -->
+      <link rel="preconnect" href="http://localhost:8080">
+      <!-- Preconnect to Google Fonts to reduce font connection time -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <!-- Load Inter from Google Fonts with display=swap to avoid render-blocking -->
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/

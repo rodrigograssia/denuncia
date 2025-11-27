@@ -15,10 +15,20 @@ function Verificacao() {
     try {
       await axios.post(`http://localhost:8080/usuario/verificar?codigo=${codigo}`);
       alert('Conta verificada com sucesso!');
-      navigate("/login");
+      navigate('/login');
     } catch (error) {
-      console.error("Erro na verificação:", error);
-  alert('Código de verificação incorreto ou expirado!');
+      console.error('Erro na verificação:', error?.response?.data || error.message);
+      if (error?.response?.status === 401) {
+        localStorage.removeItem('token');
+        alert('Sessão expirada. Faça login novamente.');
+        window.location.href = '/login';
+        return;
+      }
+      if (error?.request) {
+        alert('Erro de conexão. Tente novamente.');
+      } else {
+        alert('Erro no servidor. Tente novamente mais tarde.');
+      }
     }
   };
 

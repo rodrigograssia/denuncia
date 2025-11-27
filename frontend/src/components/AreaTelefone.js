@@ -3,16 +3,22 @@ import CampoTexto from './Campos';
 import Botao from './Botao';
 import axios from 'axios';
 
-// Normaliza telefone para dígitos (remove espaços, parênteses, traços e +)
-function normalizePhone(phone) {
-  if (!phone) return '';
-  // remove tudo que não é dígito
-  let digits = (phone || '').replace(/\D/g, '');
-  // se usuário incluiu código do país +55 no início, remova o 55 para evitar duplicação
-  if (digits.startsWith('55')) {
-    digits = digits.replace(/^55/, '');
+const normalizePhone = (phone) => (phone || '').toString().replace(/\D/g, '').slice(0, 15);
+
+
+function handleRequestError(err, defaultMsg = 'Ocorreu um erro. Tente novamente mais tarde.') {
+  console.error(defaultMsg, err?.response?.data || err?.message || err);
+  if (err?.response?.status === 401) {
+    localStorage.removeItem('token');
+    alert('Sessão expirada. Faça login novamente.');
+    window.location.href = '/login';
+    return;
   }
-  return digits;
+  if (err?.request) {
+    alert('Erro de conexão. Tente novamente.');
+    return;
+  }
+  alert('Erro no servidor. Tente novamente mais tarde.');
 }
 
 function AreaTelefone() {
@@ -44,16 +50,7 @@ function AreaTelefone() {
 
       setResultado(res.data);
     } catch (err) {
-      console.error('Erro ao verificar reputação:', err?.response?.data || err.message);
-      if (err?.response?.status === 401) {
-        localStorage.removeItem('token');
-        alert('Sessão expirada. Faça login novamente.');
-        window.location.href = '/login';
-      } else if (err?.request) {
-        alert('Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.');
-      } else {
-        alert('Erro ao verificar reputação. Tente novamente mais tarde.');
-      }
+      handleRequestError(err, 'Erro ao verificar reputação.');
     } finally {
       setLoading(false);
     }
@@ -89,11 +86,11 @@ function AreaTelefone() {
 
           {resultado && (
             <div className="mt-4 p-3 bg-white dark:bg-neutral-900 dark:text-white border rounded">
-              <p>Fraud score: {resultado.fraudScore ?? resultado.fraud_score ?? '—'}</p>
-              <p>Recent abuse: {resultado.recentAbuse ?? resultado.recent_abuse ? 'Sim' : 'Não'}</p>
+              <p>Nível de fraude: {resultado.fraudScore ?? resultado.fraud_score ?? '—'}</p>
+              <p>Abuso recente: {resultado.recentAbuse ?? resultado.recent_abuse ? 'Sim' : 'Não'}</p>
               <p>VOIP: {resultado.VOIP ?? resultado.voip ? 'Sim' : 'Não'}</p>
-              <p>Active: {resultado.active ? 'Sim' : 'Não'}</p>
-              <p>Spammer: {resultado.spammer ? 'Sim' : 'Não'}</p>
+              <p>Ativo: {resultado.active ? 'Sim' : 'Não'}</p>
+              <p>Spam: {resultado.spammer ? 'Sim' : 'Não'}</p>
             </div>
           )}
         </div>

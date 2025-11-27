@@ -53,9 +53,9 @@ function AreaDenuncia() {
         alert('Sessão expirada. Faça login novamente.');
         window.location.href = '/login';
       } else if (err?.request) {
-        alert('Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.');
+        alert('Erro de conexão. Tente novamente.');
       } else {
-        alert('Erro ao criar denúncia. Tente novamente mais tarde.');
+        alert('Erro no servidor. Tente novamente mais tarde.');
       }
     } finally {
       setLoading(false);

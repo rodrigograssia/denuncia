@@ -1,20 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { twMerge } from "tailwind-merge";
 
-const baseStyles = [
-  'font-normal',
-  'cursor-pointer',
-  'rounded-[31px]',
-  'transition-colors',
-  'duration-200',
-
-  'py-1.5',
-  'px-4',
-  'text-base',
-  
-  'flex', 'items-center', 'justify-center', 'text-center' 
-];
+const baseStyles = 'font-normal cursor-pointer rounded-[31px] transition-colors duration-200 py-1.5 px-4 text-base flex items-center justify-center text-center';
 
 const variants = {
   confirm: 'text-white bg-[#1351B4] border-none hover:bg-[#002a72]',
@@ -33,11 +20,9 @@ const variants = {
 };
 
 function Botao({ children, className, variant = 'confirm', to, ...props }) {
-  const classes = twMerge(
-    baseStyles,
-    variants[variant],
-    className
-  );
+  const variantValue = variants[variant];
+  const variantString = Array.isArray(variantValue) ? variantValue.join(' ') : (variantValue || '');
+  const classes = [baseStyles, variantString, className].filter(Boolean).join(' ');
 
   const renderInner = () => {
     if (typeof to === 'string' && /^(https?:)?\/\//i.test(to)) {
