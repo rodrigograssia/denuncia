@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +37,11 @@ public class Denuncia {
     @Column(name = "status", unique = false, nullable = false)
     private String status;
 
+    @PrePersist
+    private void prePersist() {
+        if (this.status == null || this.status.isEmpty()) {
+            this.status = "PENDENTE";
+        }
+    }
 
 }

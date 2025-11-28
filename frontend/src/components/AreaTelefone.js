@@ -8,12 +8,6 @@ const normalizePhone = (phone) => (phone || '').toString().replace(/\D/g, '').sl
 
 function handleRequestError(err, defaultMsg = 'Ocorreu um erro. Tente novamente mais tarde.') {
   console.error(defaultMsg, err?.response?.data || err?.message || err);
-  if (err?.response?.status === 401) {
-    localStorage.removeItem('token');
-    alert('Sessão expirada. Faça login novamente.');
-    window.location.href = '/login';
-    return;
-  }
   if (err?.request) {
     alert('Erro de conexão. Tente novamente.');
     return;
@@ -28,12 +22,6 @@ function AreaTelefone() {
   const [resultado, setResultado] = useState(null);
 
   const handleEnviar = async () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Você precisa estar logado para verificar reputação de um telefone.');
-      return;
-    }
-
     const numero = normalizePhone(telefone);
     if (!numero) {
       alert('Digite um número válido.');
@@ -44,8 +32,7 @@ function AreaTelefone() {
     setResultado(null);
     try {
       const res = await axios.get('http://localhost:8081/denuncia/verificar-reputacao', {
-        params: { telefone: numero },
-        headers: { Authorization: `Bearer ${token}` }
+        params: { telefone: numero }
       });
 
       setResultado(res.data);
@@ -88,7 +75,7 @@ function AreaTelefone() {
             <div className="mt-4 p-3 bg-white dark:bg-neutral-900 dark:text-white border rounded">
               <p>Nível de fraude: {resultado.fraudScore ?? resultado.fraud_score ?? '—'}</p>
               <p>Abuso recente: {resultado.recentAbuse ?? resultado.recent_abuse ? 'Sim' : 'Não'}</p>
-              <p>VOIP: {resultado.VOIP ?? resultado.voip ? 'Sim' : 'Não'}</p>
+              <p>VOIP (tecnologia que converte a voz em dados digitais, que são transmitidos pela internet em pacotes.): {resultado.VOIP ?? resultado.voip ? 'Sim' : 'Não'}</p>
               <p>Ativo: {resultado.active ? 'Sim' : 'Não'}</p>
               <p>Spam: {resultado.spammer ? 'Sim' : 'Não'}</p>
             </div>

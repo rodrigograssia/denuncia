@@ -67,22 +67,34 @@ public class DenunciaController {
         }
 
         String token = authHeader.replace("Bearer ", "");
+        // valida token e obtém o ID do usuário
+        Long userId = jwtUtil.getUserIdFromToken(token);
+
+        // Lista apenas as denúncias do usuário logado
+        List<Denuncia> denuncias = denunciaService.listarDenunciasPorUsuario(userId);
+        return ResponseEntity.ok(denuncias);
+    }
+
+    @GetMapping("/listar-todas")
+    public ResponseEntity<List<Denuncia>> listarTodasDenuncias(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(401).build();
+        }
+
+        String token = authHeader.replace("Bearer ", "");
         // valida token (vai lançar exceção se inválido)
         jwtUtil.getUserIdFromToken(token);
 
+        // Retorna todas as denúncias do sistema (para admins)
         List<Denuncia> denuncias = denunciaService.listarDenuncias();
         return ResponseEntity.ok(denuncias);
     }
 
     @GetMapping("/verificar-reputacao")
     public ResponseEntity<?> verificarReputacao(
-            @RequestParam String telefone, // <-- AQUI! O usuário digita este número.
-            @RequestHeader("Authorization") String token // <-- AQUI! O usuário logado.
+            @RequestParam String telefone
     ) {
-
-        jwtUtil.getUserIdFromToken(token.replace("Bearer ", ""));
-
-        // 2. O 'telefone' (que o usuário digitou) é enviado para a API externa
+        // Endpoint público - não requer autenticação
         Object reputacao = telefoneReputacaoService.buscarReputacao(telefone);
 
         return ResponseEntity.ok(reputacao);

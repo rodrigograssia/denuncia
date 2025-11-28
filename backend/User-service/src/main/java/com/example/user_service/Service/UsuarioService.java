@@ -125,6 +125,58 @@ public void verificarUsuarioPeloCodigo(String codigo) {
             throw new IllegalArgumentException("Senha Invalida.");
         }
     }
+    @Transactional
+    public void iniciarResetSenha(String email) {
+        Optional<Usuario> optUsuario = usuarioRepository.findByEmailUsuario(email);
+        if (optUsuario.isPresent()) {
+            Usuario usuario = optUsuario.get();
+            
+            // Gerar token de reset (6 dígitos)
+            String resetToken = String.format("%06d", new Random().nextInt(999999));
+            LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(15); // Token válido por 15 minutos
+            
+            // Salvar token no usuário
+            usuario.setResetPasswordToken(resetToken);
+            usuario.setResetTokenExpiryDate(expiryDate);
+            usuarioRepository.save(usuario);
+            
+            // Enviar email com token
+            emailService.sendPasswordResetEmail(usuario.getEmailUsuario(), resetToken);
+        }
+        // Não revelamos se o email existe ou não por segurança
+    }
+
+    @Transactional
+    public void resetarSenha(String token, String novaSenha) {
+        if (token == null || token.isBlank()) {
+            throw new IllegalArgumentException("Token é obrigatório.");
+        }
+        if (novaSenha == null || novaSenha.length() < 6) {
+            throw new IllegalArgumentException("Nova senha deve ter pelo menos 6 caracteres.");
+        }
+
+        Usuario usuario = usuarioRepository.findByResetPasswordToken(token)
+                .orElseThrow(() -> new IllegalArgumentException("Token inválido."));
+
+        // Verificar se o token não expirou
+        if (LocalDateTime.now().isAfter(usuario.getResetTokenExpiryDate())) {
+            // Limpar token expirado
+            usuario.setResetPasswordToken(null);
+            usuario.setResetTokenExpiryDate(null);
+            usuarioRepository.save(usuario);
+            throw new IllegalArgumentException("Token expirado. Solicite um novo reset.");
+        }
+
+        // Criptografar nova senha
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        usuario.setSenhaUsuario(encoder.encode(novaSenha));
+        
+        // Limpar token usado
+        usuario.setResetPasswordToken(null);
+        usuario.setResetTokenExpiryDate(null);
+        
+        usuarioRepository.save(usuario);
+    }
 
 }
 

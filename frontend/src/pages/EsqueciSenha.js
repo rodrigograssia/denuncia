@@ -50,7 +50,7 @@ function EsqueciSenha() {
           <CampoTexto
             placeholder="seu@email.com"
             value={email}
-            onChangeValue={setEmail}
+            onChange={(e) => setEmail(e.target.value)}
             className="mb-3 dark:bg-neutral-800 dark:text-white"
           />
         </div>

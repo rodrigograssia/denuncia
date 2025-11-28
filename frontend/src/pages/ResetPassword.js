@@ -33,7 +33,7 @@ function ResetPassword() {
 
     try {
       setLoading(true);
-      await axios.post(`http://localhost:8080/usuario/resetar-senha?token=${encodeURIComponent(token)}`, { novaSenha });
+      await axios.post(`http://localhost:8080/usuario/reset?token=${encodeURIComponent(token)}`, { novaSenha });
       alert('Senha alterada com sucesso. Faça login com a nova senha.');
       navigate('/login');
     } catch (error) {
@@ -63,8 +63,18 @@ function ResetPassword() {
         <p className="text-sm text-gray-600 dark:text-gray-300">Insira sua nova senha abaixo.</p>
 
         <div className="w-full mt-4">
-          <CampoSenha value={novaSenha} onChangeValue={setNovaSenha} className="mb-3 dark:bg-neutral-800 dark:text-white" />
-          <CampoSenha value={confirmSenha} onChangeValue={setConfirmSenha} className="mb-3 dark:bg-neutral-800 dark:text-white" />
+          <CampoSenha 
+            placeholder="Nova senha"
+            value={novaSenha} 
+            onChange={(e) => setNovaSenha(e.target.value)} 
+            className="mb-3 dark:bg-neutral-800 dark:text-white" 
+          />
+          <CampoSenha 
+            placeholder="Confirmar nova senha"
+            value={confirmSenha} 
+            onChange={(e) => setConfirmSenha(e.target.value)} 
+            className="mb-3 dark:bg-neutral-800 dark:text-white" 
+          />
         </div>
 
         <div className="flex gap-3 w-full">

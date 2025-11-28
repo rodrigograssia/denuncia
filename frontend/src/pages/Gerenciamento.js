@@ -43,7 +43,7 @@ function Gerenciamento() {
                 const allUsers = Array.isArray(usersRes.data) ? usersRes.data : [];
 
                 // 3) buscar todas as denuncias
-                const denRes = await axios.get('http://localhost:8081/denuncia/listar', {
+                const denRes = await axios.get('http://localhost:8081/denuncia/listar-todas', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const allDen = Array.isArray(denRes.data) ? denRes.data : [];

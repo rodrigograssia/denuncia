@@ -24,6 +24,10 @@ public class DenunciaService {
 
 
     public Denuncia salvar(Denuncia denuncia) {
+        // Define status padrão se não foi informado
+        if (denuncia.getStatus() == null || denuncia.getStatus().isEmpty()) {
+            denuncia.setStatus("PENDENTE");
+        }
         return denunciaRepository.save(denuncia);
     }
 
@@ -48,6 +52,10 @@ public class DenunciaService {
 
     public List<Denuncia> listarDenuncias(){
         return denunciaRepository.findAll();
+    }
+
+    public List<Denuncia> listarDenunciasPorUsuario(Long idUsuario){
+        return denunciaRepository.findByIdUsuario(idUsuario);
     }
 
 
