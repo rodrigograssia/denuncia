@@ -4,13 +4,34 @@ import Footer from '../components/Footer';
 import Botao from '../components/Botao';
 import axios from 'axios';
 
-function MinhasDenuncias() {
+function DenunciaItem({ d }) {
+    return (
+        <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-4 shadow">
+            <div className="flex items-start justify-between">
+                <h2 className="font-bold text-lg dark:text-white">{d.titulo_denuncia || d.titulo}</h2>
+                <span className="text-xs text-gray-400">ID: {d.idDenuncia ?? d.id}</span>
+            </div>
+            <div className="flex flex-wrap gap-4 items-center text-sm text-gray-400">
+                <span>Categoria: <span className="text-gray-700 dark:text-gray-200">{d.categoria_denuncia || d.categoria}</span></span>
+                {(d.empresa_denuncia || d.nomeEmpresa) && <span>Empresa: <span className="text-gray-700 dark:text-gray-200">{d.empresa_denuncia || d.nomeEmpresa}</span></span>}
+            </div>
+            {(d.descricao_denuncia || d.descricao) && <p className="mt-2 text-gray-600 dark:text-gray-300">{d.descricao_denuncia || d.descricao}</p>}
+            <div className="flex items-center gap-3 mt-2">
+                { (d.status || '').toUpperCase() === 'PENDENTE' && <p className="text-blue-600">{d.status}</p> }
+                { (d.status || '').toUpperCase() === 'CONCLUÍDA' && <p className="text-green-600">{d.status}</p> }
+            </div>
+        </div>
+    );
+}
+
+export default function MinhasDenuncias() {
     const [denuncias, setDenuncias] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
+        let mounted = true;
         const fetchData = async () => {
             const token = localStorage.getItem('token');
             if (!token) {
@@ -22,20 +43,12 @@ function MinhasDenuncias() {
             setLoading(true);
             setError(null);
             try {
-                // Obter usuário atual
-                const meRes = await axios.get('http://localhost:8080/usuario/me', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                const usuario = meRes.data;
-
-                // Buscar todas as denúncias e filtrar por idUsuario
                 const denRes = await axios.get('http://localhost:8081/denuncia/listar', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
 
                 const all = Array.isArray(denRes.data) ? denRes.data : [];
-                const minhas = all.filter(d => d.idUsuario === usuario.idUsuario);
-                setDenuncias(minhas);
+                if (mounted) setDenuncias(all);
             } catch (err) {
                 console.error('Erro ao carregar denúncias:', err?.response?.data || err.message);
                 if (err?.response?.status === 401) {
@@ -46,12 +59,27 @@ function MinhasDenuncias() {
                     setError('Não foi possível carregar suas denúncias. Tente novamente mais tarde.');
                 }
             } finally {
-                setLoading(false);
+                if (mounted) setLoading(false);
             }
         };
 
         fetchData();
+        return () => { mounted = false; };
     }, []);
+
+    const filtered = denuncias.filter(d => {
+        const q = searchTerm.trim().toLowerCase();
+        if (!q) return true;
+        const idStr = String((d.idDenuncia ?? d.id) || '').toLowerCase();
+        return (
+            idStr.includes(q) ||
+            (d.titulo_denuncia || d.titulo || '').toLowerCase().includes(q) ||
+            (d.categoria_denuncia || d.categoria || '').toLowerCase().includes(q) ||
+            (d.empresa_denuncia || d.nomeEmpresa || '').toLowerCase().includes(q) ||
+            (d.descricao_denuncia || d.descricao || '').toLowerCase().includes(q) ||
+            (d.status || '').toLowerCase().includes(q)
+        );
+    });
 
     return (
         <div className="m-0 p-0 min-h-screen dark:bg-neutral-800 flex flex-col">
@@ -80,42 +108,17 @@ function MinhasDenuncias() {
                         <div className="bg-white dark:bg-neutral-900 rounded-lg border p-6 shadow-xl text-center text-red-600">{error}</div>
                     )}
 
-                    {!loading && !error && denuncias.length === 0 && (
+                    {!loading && !error && filtered.length === 0 && (
                         <div className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-6 shadow-xl">
                             <p className="text-gray-600 dark:text-gray-300">Ainda não há denúncias.</p>
                         </div>
                     )}
 
-                    {!loading && !error && denuncias.length > 0 && (
+                    {!loading && !error && filtered.length > 0 && (
                         <div className="space-y-4 w-full">
-                            {denuncias
-                                .filter(d => {
-                                    const q = searchTerm.trim().toLowerCase();
-                                    if (!q) return true;
-                                    return String(d.idDenuncia).toLowerCase().includes(q)
-                                        || (d.titulo || '').toLowerCase().includes(q)
-                                        || (d.categoria || '').toLowerCase().includes(q)
-                                        || (d.nomeEmpresa || '').toLowerCase().includes(q)
-                                        || (d.descricao || '').toLowerCase().includes(q)
-                                        || (d.status || '').toLowerCase().includes(q);
-                                })
-                                .map(d => (
-                                    <div key={d.idDenuncia} className="bg-white dark:bg-neutral-900 rounded-lg border border-gray-300 dark:border-neutral-600 p-4 shadow">
-                                        <div className="flex items-start justify-between">
-                                            <h2 className="font-bold text-lg dark:text-white">{d.titulo}</h2>
-                                            <span className="text-xs text-gray-400">ID: {d.idDenuncia}</span>
-                                        </div>
-                                        <div className="flex flex-wrap gap-4 items-center text-sm text-gray-400">
-                                            <span>Categoria: <span className="text-gray-700 dark:text-gray-200">{d.categoria}</span></span>
-                                            {d.nomeEmpresa && <span>Empresa: <span className="text-gray-700 dark:text-gray-200">{d.nomeEmpresa}</span></span>}
-                                        </div>
-                                        {d.descricao && <p className="mt-2 text-gray-600 dark:text-gray-300">{d.descricao}</p>}
-                                        <div className="flex items-center gap-3 mt-2">
-                                            {d.status === 'PENDENTE' && <p className="text-blue-600">{d.status}</p>}
-                                            {d.status === 'CONCLUÍDA' && <p className="text-green-600">{d.status}</p>}
-                                        </div>
-                                    </div>
-                                ))}
+                            {filtered.map(d => (
+                                <DenunciaItem key={d.idDenuncia ?? d.id} d={d} />
+                            ))}
                         </div>
                     )}
                 </div>
@@ -125,4 +128,3 @@ function MinhasDenuncias() {
         </div>
     );
 }
-export default MinhasDenuncias;

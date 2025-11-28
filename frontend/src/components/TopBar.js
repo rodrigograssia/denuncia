@@ -35,6 +35,25 @@ const Topbar = (props) => {
     setIsLogged(!!token);
   }, []);
 
+  // Fetch role on mount so admin links appear without opening the dropdown
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    const fetchRole = async () => {
+      try {
+        const res = await fetch('http://localhost:8080/usuario/me', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        setIsAdmin(data?.role === 'ADMIN');
+      } catch (e) {
+        // ignore
+      }
+    };
+    fetchRole();
+  }, []);
+
   useEffect(() => {
     if (!showDropdown) return;
     const token = localStorage.getItem("token");
