@@ -10,7 +10,7 @@ Funcionalidades do sistema:
 1. Você pode acessar a plataforma para saber sobre o "Golpe do Presente"
 2. Caso queira fazer uma denúncia, faça cadastro ou login para que o sistema te identifique
 3. O sistema também possibilita a verificação de um telefone (dizendo se é spam ou não) // IPQS API
-4. O sistema verifica o email do usuário // Mailgun API
+4. O sistema verifica o email do usuário no momento do cadastro e/ou envia um email caso você esqueça a senha // Mailgun API
 
 API:
 IPQS // https://www.ipqualityscore.com/user/phone-number-validation-api
